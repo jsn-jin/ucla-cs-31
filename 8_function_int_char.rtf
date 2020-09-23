@@ -1,0 +1,322 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fmodern\fcharset0 Courier;\f2\fmodern\fcharset0 Courier-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red127\green127\blue127;\red251\green2\blue255;\red0\green0\blue255;
+\red0\green0\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c57046\c57047\c57046;\cssrgb\c100000\c25279\c100000;\cssrgb\c1680\c19835\c100000;
+\cssrgb\c1680\c19835\c100000;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww25500\viewh19880\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Oct. 24 - W - Lec 8\
+\
+Function + int and char\
+# -------------------------------------------------------------------------------- #\
+\
+
+\f1 	string s;\
+	getline(cin,s)
+\f0 \
+\
+	
+\f1 if (s != "" || s.size() > 0)\
+		s[0] = toupper(s[0])
+\f0 \
+\
+		
+\f1 \cf2 // if declare a string without initialization, the string will be empty.
+\f0 \cf0 \
+\
+\
+
+\f1 	if (t[k] == 'E' || t[k] == 'e')\
+		\
+		/\cf2 / is equal to\cf0 \
+\
+	if (toupper(t[k]) == 'E')
+\f0 \
+
+\f1 \
+
+\f0 # -------------------------------------------------------------------------------- #\
+
+\f1 \
+	toupper(s);				\cf2 // won't compile. argument must be a char.\cf0 \
+	\
+	toupper(s[0]);			\cf2 //	it will compile, but it is useless.\cf0 \
+	\
+	\cf3 s[0]\cf0  = toupper(s[0]);	\cf2 // correct way.
+\f0 \
+\cf0 \
+\
+
+\f1 	k = 3 + 5;				\cf2 // useful, k is assigned to 8\cf0 \
+	\
+	n = 2 * (k = 3 + 5);	\cf2 // legal, n is assigned to 16\cf0 \
+\
+	3 + 5;						\cf2 //	useless\cf0 \
+\
+	greet(3, "Hello");		\cf2 // return hello for 3 times - worth calling\cf0 \
+\
+	sin(3.1415..);			\cf2 // useless
+\f0 \cf0 \
+\
+\
+# ---------------------------------------- Reference ---------------------------------------- #\
+\
+
+\f1 	void exchange (int& x, int& y);\
+\
+	int main()\
+	\{\
+		...\
+		int a;\
+		int b;\
+		cin >> a >> b;\
+\
+		if (a < b)\
+			exchange(a, b);\
+\
+		cout << a << " is at least as big as " << b <endl;\
+	\}\
+\
+	void exchange(int& x, int& y)\
+	\{			\
+		int t = x;\
+		x = y;\
+		y = t;\
+	\}\
+\cf2 		// reference parameter: we don't want to just copy it.\
+		// & means int x is another name of an existing variable.
+\f0 \cf0 \
+\
+\
+# -------------------------------------------------------------------------------- #\
+\cf4 	\
+	// Example: ask you for phone number\
+	// Feature: "N-and-a-half-times loop"\
+	// Break\
+\cf0 \
+
+\f1 	cout << "Enter your phone number" << endl;\
+	string phone;\
+	getline(cin, phone);\
+	while (!isValidPhoneNumber(phone))\
+	\{\
+		cout << "A phone number must have 10 digits; try again." << endl;\
+		cout << "Enter your phone number" << endl;\
+		getline(cin, phone);\
+	\}\
+	\
+	cout << "The digits in the number are " << digitsOf(phone) << endl;
+\f0 \
+
+\f1 \
+	\
+		\cf3 // an easier way\cf0 \
+\
+	string phone;\
+	while(true)			\cf2 // as we can break out\cf0 \
+	\{	\
+		cout << "Enter a phone number: ";\
+		getline(cin, phone);\
+		if(isValidPhoneNumber(phone))\
+			break;			\cf2 // breaks you out of the nearest enclosing switch or loop\cf0 \
+		cout << "A phone number must have 10 digits; try again." << endl;\
+	\}\
+	\
+	cout << "The digits in the number are " << digitsOf(phone) << endl;
+\f0 \
+\
+	\
+		
+\f1 \cf3 // using for loop
+\f0 \cf0 \
+	\
+
+\f1 	string phone;\
+	for (;;)				\cf2 // as we can break out\cf0 \
+	\{	\
+		cout << "Enter a phone number: ";\
+		getline(cin, phone);\
+		if(isValidPhoneNumber(phone))\
+			break;			\cf2 // breaks you out of the nearest enclosing switch or loop\cf0 \
+		cout << "A phone number must have 10 digits; try again." << endl;\
+	\}\
+\
+	cout << "The digits in the number are " << digitsOf(phone) << endl;
+\f0 \
+\
+\
+# ---------------------------------------- Break and Continue ---------------------------------------- #\
+\
+
+\f1 	for (.....;.....;.....)\
+	\{\
+		...\
+		...\
+		if (...)\
+		\{\
+			... /* short thing */...\
+		\}\
+		else\
+		\{\
+		...\
+		...\
+		...\
+		\}\
+	\}\
+\
+\
+\
+	for (.....;.....;.....)\
+	\{\
+		...\
+		...\
+		if (...)\
+		\{\
+			... /* short thing */...\
+			\cf3 continue\cf0 ;					\cf2 // go to the next iteration\cf0 \
+		\}\
+		...\
+		...\
+	\}\
+
+\f0 \
+\cf3 	// 
+\f1 break: gets you out from the nearest loop \
+	// continue: go to the next iteration\
+
+\f0 \cf0 \
+	\
+	// for example\
+	\
+
+\f1 	int i = 0;\
+	for (;;i++)\
+	\{\
+		if (i == 3)\
+			continue;\
+		if (i == 5)\
+			break;\
+		cout << i;\
+		\
+	\}
+\f0 \
+	___________\
+	output:0124\
+\
+\
+\
+# ---------------------------------------- \cf5 int/char in Memory \cf0 ---------------------------------------- #\
+\cf6 	\
+	And conversion from int to char and char to int\cf0 \
+\
+	// ASCII and characters\
+\
+
+\f1 \cf2 	// Remember, everything is represented by 0s and 1s in computers. \
+	// That means characters must be stored as some binary numbers as well.\
+	// ASCII defines the mapping between characters and integers. \
+	// (there are others like EBCDIC and Unicode)
+\f0 \cf0 \
+\
+\
+	For example, a character '0' maps to 48 in integer, and 'A' maps to 65.\
+\
+		
+\f1 int x = '0';		\cf2 // This will store 48 into x
+\f0 \cf0 \
+\
+\
+	How can we convert '3' to 3?\
+\
+
+\f1 		int x = '3';\
+		x -=48;			\cf2 // We can do this, \
+							// But this program will not work if other mapping scheme is used.\cf0 \
+\
+		x = '3' - '0';	\cf2 // This is better
+\f0 \cf0 \
+\
+	======\
+\
+
+\f1 	char ch = 76;		\cf2 // If ASCII, 'L'; if EBCDIC, '<'\cf0 \
+	int k = 'L';		\cf2 // If ASCII, 76; if EBCDIC, 211
+\f0 \cf0 \
+\
+
+\f1 \cf2 	// The ASCII standard says that\
+	// 'a' < 'b', 'b' < 'c'.............\
+	// 'A' < 'B', 'B' < 'C'.............\
+\
+	// Some standards, like EBCDIC, does not guarantee that ABCDE...Z are mapped by consecutive integers. \
+\
+	// However, the all standards guarantees that '0', '1', '2'... are correspondent to consecutive integers.
+\f0 \cf0 \
+\
+	\
+
+\f1 	ch++;			// Now, it is 77. If ASCII, 'M'; if EBCDIC, '('\
+\
+	k++;\
+\
+	cout << ch;	// Calls the function for char; 
+\f2\b writes 'M' if ASCII; '(' if EBCDIC
+\f1\b0 ;\
+								// In ASCII, 'M' is 77;\
+								// In EBCDIC, '(' is 77;\
+\
+	cout << k;	// Calls the function for int; 
+\f2\b writes '7','7' (output)
+\f1\b0 ;\
+								// In ASCII, this is 55, 55\
+								// In EBCDIC, this is 247, 247\
+\
+\
+	double d = 3.68;\
+	cout.setf(ios::fixed);\
+	cout.precision(1);\
+\
+	cout << d;	// Calls the function for double; writes '3', '.', '7';\
+								// In ASCII, this is 51, 46, 55\
+								// In EBCDIC, this is 243, 75, 247\
+\
+\
+	string s = "AZ";\
+	cout << s;	// Calls the function for string; writes 
+\f2\b 'A', 'Z';
+\f1\b0 \
+								// In ASCII, 'A' is 65, 'Z' is 55;\
+								// In EBCDIC, 'A' is 193, 'Z' is 247;\
+\
+	if (ch == 't')\
+	if (ch == 'k')\
+	if (ch == 77)\
+	if ((ch >= 'A' && ch <= 'D') || ch == 'F')
+\f0 \
+\
+ \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

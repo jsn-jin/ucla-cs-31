@@ -1,0 +1,305 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fmodern\fcharset0 Courier;\f2\fmodern\fcharset0 Courier-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red127\green127\blue127;\red251\green2\blue255;\red251\green2\blue7;
+\red0\green0\blue0;\red251\green2\blue7;\red33\green255\blue6;\red251\green2\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c57046\c57047\c57046;\cssrgb\c100000\c25279\c100000;\cssrgb\c100000\c14913\c0;
+\cssrgb\c0\c0\c0;\cssrgb\c100000\c14913\c0;\cssrgb\c0\c97680\c0;\cssrgb\c100000\c25279\c100000;}
+\margl1440\margr1440\vieww21500\viewh18500\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Nov. 5 - M - Lec 11\
+\
+CString Continued + Multidimensional Array\
+\
+	
+\f1 #include <cstring> \cf2 // The c library <cstring>
+\f0 \
+
+\f1 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 # ------------------------------ \cf3 How to assign (how to copy)?\cf0  ------------------------------ #
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+			// Since c strings are character array, \cf4 you can't assign a c string\cf0 .\
+\
+	\cf4 s = t;\cf0 	\cf2 // Won't compile
+\f0 \cf0 \
+
+\f1 \
+\
+			// We have to assign each character to certain position \
+			// up to and including the zero byte.\
+			// But we don't need a for loop, we have a function called strcpy().\
+\
+	strcpy(destination, source);	\
+\
+	strcpy(s, t);		\
+
+\f0 \
+		
+\f1 \cf3 	// It is your responsibility to make sure the source string is a C string \
+			// which includes a zero byte.\
+			// and the destination array is big enough to hold a copy from the source.\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 # ------------------------------ \cf3 How to concatenate (how to add)?\cf0  ------------------------------ #
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+			// How to concatenate 3 exclamation marks to the end of a string? \
+			// >> we can write a loop to do that, \
+			// but the library gives us a function, strcat().\
+\
+	char s[10] = "Ghost";\
+\
+	
+\f2\b strcat
+\f1\b0 (s, "!!!");	// now s is "Ghost!!!". \
+							// the function find the zero byte and add the second string before it.\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 # ----------------------------------- \cf3 How to compare?\cf0  ----------------------------------- #
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	\cf4 if (t < s)\cf0 \
+\
+			// As for the comparison operators, if you give it to c, \
+			// It will compile but will not do what you want.\
+			// It will compare the \cf4 address\cf0  of these two strings.\
+\
+			// Do we need a function to compare all the characters? No, C has a function.\
+\
+	strcmp(a, b);		\
+\
+				// This function returns an int, \
+				// a negative integer if a comes before (smaller than) b,\
+				// zero if they are equal,\
+				// positive if a comes after (bigger than) b\
+\
+	
+\f2\b \cf3 if (strcmp(a, b) == 0)
+\f1\b0 \cf0 \
+\
+		// For c++ strings, you compare 2 strings by using operators < > <= >= ==.\
+		// \cf3 In c strings, compare whether if (strcmp(a, b) <= >= == < > 0)\cf0 \
+
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf5 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ------------------------------ \cf6 Common Mistake\cf0  ------------------------------ ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+			// If a equal to b?\
+			// Wrong: 	\
+\
+		\cf4 if (strcmp(a, b))\
+\cf0 \
+			// If they are really equal, the function will return 0 - false.			// If they are different, the function will re turn a non- zero value - true.\
+			// This outputs the opposite result as you want.\
+	\
+			//right: \
+\
+		\cf7 if (strcmp(a, b) == 0)\cf0 \
+\
+			// Does a come before b?\
+			// Wrong: \
+	\
+		\cf4 if (a < b)\cf0 	\
+		\
+			// Wight: \
+	\
+		\cf7 if (strcmp(a, b) < 0)\cf0 \
+
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf5 ## ---------------------------------------------------------------- ##
+\f0 \cf0 \
+\
+
+\f1 \cf5 ## ---------------------------------------------------------------- ##
+\f0 \cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf0 	The Microsoft compiler doesn't like these functions. \
+	It will mark cstring lib functions as errors.\
+	The error told you "these functions are deprecated".\
+	Now, they don't mark it as error but warn it.\
+\
+	Before any of your include, you should put this line:\
+\
+\cf8 	#define _CRT_SECURE_NO_WARNINGS\cf0 	// This will turn off the warning.
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf5 ## ---------------------------------------------------------------- ##\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf5 ## ---------------------------------------------------------------- ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+	If I have a c++ string and I want to call a function of c string.\
+\
+	
+\f1 void f(const char cs[])			\cf2 // Promise will not modify it\cf0 \
+	\{\
+		...\
+	\}\
+\
+	int main()\
+	\{\
+		string s = "Hello";\
+		\cf4 f(s);\cf0 	\
+				\cf4 // This won't compile! s is a C++ string, not a C string.\cf0 \
+	\
+		\cf7 f(s.c_str());	\cf0 \
+				// Ok. treat it as a cstring which can't be modify\
+	\
+		char a[10] = "Ghost";\
+		\cf7 s = a;						// Can assign C++ string or C string to C++ string.\cf0 \
+		s = "wow";				// Works.\
+	\
+		\cf4 a = s;						// Won't work, we cannot assign C string\cf0 \
+		strcpy(a, s.c_str());	// a is now "wow";\
+	\}\
+\
+	const int x = 10;\
+	int y = 10;	// modifiable y\
+	int z = x;	// modifiable z
+\f0 \
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ----------------------------------- Multidimensional Array ----------------------------------- #
+\f1 									  
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 	
+\f1 // Suppose we need a program to check the attendance of a movie theater:\
+	// 5 weeks and 7 days in a week.\
+	// Probably we need a table.\
+\
+	// Each colon represents a day.\
+	// Each row represents a week.\
+\
+	// I can declare a two dimensional array!\
+\
+			0	1	2	3	4	5	6\
+		0	.	.	.	.	.	.	.	\
+		1	.	.	.	.	.	.	.\
+		2	.	.	.	.	.	.	.\
+		3	.	.	.	.	.	.	.\
+		4	.	.	.	.	.	.	.	\cf0 \
+\
+	const int NWEEKS = 5;\
+	const int NDAYS = 7;\
+\
+	int attendance[NWEEKS][NDAYS];	// declare a 2-d array\
+	cout << attendance[2][5];\
+\
+		// I want to have a total for each week;\
+\
+	for (int w=0; w < NWEEKS; w++)\
+	\{\
+		int t = 0;	\
+			for (int d=0; d < NDAYS; d++)\
+			\{\
+				t+= attendance[w][d];\
+			\}\
+		cout << "The total for week " << w << " is " << t << ends;\
+	\}\
+\
+\cf2 	// We want the total for each week: row by row\
+	// The second subscript [day] is moving more quickly.\
+\cf0 \
+	======\
+\
+\cf2 	// Find out the attendance for each of the weekend days in 5 weeks (Friday - Sunday).\
+	// Let's put all the weekend days together...\
+\cf0 \
+	const string dayNames[NDAYS] = \{\
+		"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"\
+	\};\
+\
+	int grandTotal = 0;\
+	for (int d=4; d < NDAYS; d++)\
+	\{\
+		int t = 0;\
+		for (int w = 0; w < NWEEKS; w++)\
+			t += attendance[w][d];\
+		cout << "The total for  " << dayNames[d] << "is  " << t << endl;\
+		grandTotal += t;\
+	\}\
+	 \
+	cout << "Over the course of " << NWEEKS << " weeks, weekend attendance was " \
+		<< grandtotal << endl;\
+\
+	======\
+\
+		// What's the mean attendance for Wednesday, or Monday, or for any given day?\
+		// \cf8 double computeMean(const int a[], int n);\cf0 		// Previously we have this function, but it can't be used here.\
+\
+\
+	double meanForADay(
+\f2\b \cf3 const int a[][NDAYS]
+\f1\b0 \cf0 , 
+\f2\b int nRows
+\f1\b0 , int dayNumber)	\{\
+		if (dayNumber <= 0)\
+			return 0;\
+		int total = 0;\
+		for (int r=0; r < nRows; r++)\
+			total += a[r][dayNumber];\
+		return static_cast<double>(total)	/ nRows\
+	\}\
+\
+	int main()\
+	\{\
+		int attendance[NWEEKS][NDAYS];\
+		...\
+		double meanFri = meanForAday(attendance, NWEEKS, 4 /*Friday*/)\
+	\}\
+\
+	// When passing a 2-d array to a function,\
+	// we leave off the first dimension, \
+	// but we have to tell the function how many columns there are.\
+\
+	int multiplexChainAttendance[5][7][10][16];		// 4 dimensional arrays\
+\
+	void f(
+\f2\b \cf3 int b[][7][10][16]
+\f1\b0 \cf0 , int first, ...)		// We don't specify the first one, \
+		// but we must specify others,\
+		// and pass another integer to represent the first bound.
+\f0 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

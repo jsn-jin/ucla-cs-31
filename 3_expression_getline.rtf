@@ -1,0 +1,228 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fmodern\fcharset0 Courier;\f2\fnil\fcharset0 Menlo-Bold;
+\f3\fnil\fcharset0 Menlo-Italic;\f4\fmodern\fcharset0 Courier-Oblique;\f5\fmodern\fcharset0 Courier-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue7;\red127\green127\blue127;\red0\green0\blue255;
+}
+{\*\expandedcolortbl;;\cssrgb\c100000\c14913\c0;\cssrgb\c57046\c57047\c57046;\cssrgb\c1680\c19835\c100000;
+}
+\margl1440\margr1440\vieww37900\viewh21300\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Oct. 8 - M - Lec 3\
+\
+Variable Expression + 
+\f1 getline(cin, str) + cin.ignore(10000,'\\n')
+\f0 \
+\
+# ------------------------------------------------------------------------------------------ #\
+\
+	distance = finalPos - initPos;\
+	velocity = (finalPos - initPos) / times;\
+\
+>> The arithmetic operations on the right hand side of '='s are called expressions. \
+>> It can take the form of an arithmetic expression like this, or can be more complex.\
+\
+>> The expression is expected to return us the data that we can store into the variable on the left hand side of =.\
+\
+# ---------------------------------------- Arithmetic Expression ---------------------------------------- #\
+\
+		*	 / \
+	\
+		+	 -\
+\
+What does "3 + 6 / 2" mean?\
+\
+	\cf2 (3 + 4)(2 + 1)\cf0 		\cf3 // assumed to be multiplication, but\cf0 \
+	\
+	(3 + 4) * (2 + 1)	\cf3 // we have to use *\cf0 \
+\
+\
+\cf2 Parenthesis shows higher
+\f2\b  precedence
+\f0\b0 \cf0 \
+\
+6 - 3 + 1 for operators of 
+\f2\b equal precedence
+\f0\b0  (calculated from left to right)\
+\
+# ------------------------------------------------------------------------------------------ #\
+\
+\ul Division and Multiplication:\ulnone \
+\
+for different data type, if either one data is double, the result will be a double (when you direct "cout" the expression). \
+For example.\
+\
+\
+	cout << 14.0 / 5.0	==> gives you 2.8\
+	cout << 14.0 / 5 	==> gives you 2.8\
+	cout << 14 / 5.0		==> gives you 2.8\
+	cout << 14 / 5 		==> 2 (the result is of int, drop the fraction)\
+\
+\ul Modulo:\ulnone \
+	\
+	cout << 14 % 5		==> gives you 4 (remainders) \
+	cout << 44 % 2 		==> gives you 0\
+\
+Does the * have higher or lower precedence than double less than << ? Higher!\
+	\
+		cout << "You earned $" << 
+\f2\b \cf4 hoursWorked * rateOfPay
+\f0\b0 \cf0  << "." << endl;\
+\
+So we don\'92t need a parenthesis here.\
+\
+\
+The numerical value is 161.3, but we need 2 decimal places:\
+\
+	
+\f2\b cout.setf(ios::fixed);
+\f0\b0 		\cf3 // no scientific notation\cf0 \
+	
+\f2\b cout.precision(2);
+\f0\b0 			\cf3 // scientific notation\cf0 \
+\
+\
+\cf2 Put these lines before "cout"\cf0 \
+\
+# ---------------------------------------- Variables ---------------------------------------- #\
+\
+If we compute something more than once, it\'92s better to compute it once and then save it.\
+\
+\ul Declaration (2 ways):\ulnone \
+	\
+	
+\f3\i type
+\f0\i0  identifier;\
+	
+\f3\i type
+\f0\i0  identifier = expression;\
+\
+\
+	double x = 3.1 + 14/5 = 5.1;	\cf3 // 14 and 5 are both int, 14/5 = 2\cf0 \
+	\
+	double y = 3 + 2;				\cf3 // y = 5.0\cf0 \
+	int z = 14.0 / 5;				\cf3 // Some language don\'92t allow you to do this. 										// However, C and C++ do allow this. Z = 2.\cf0 \
+	int a = 10;\
+	int b = a * a;\
+	int c = 25/(b-100);\
+\
+	\cf3 // There is a problem: 25 is divided by 0, undefined behavior.\cf0 \
+\
+	double d;				\cf3 // not initialized\cf0 \
+	double e = 2 * d;\
+	cout << e;			\cf3 // d is stored with an original value\
+							// this line gives you 4.48248e-314\
+							// the the value of d is random, so does e\cf0 \
+\
+	int f = 1000;\
+	int g = f * f * f;\
+	int h = f * g;		\cf3 // h may be too large, \
+							// or represent a negative number\
+\
+\cf0 4 bytes = 32 bit\
+the first bit represents the sign + (0) or - (1)\
+\
+1 + 31 bits: 011111111111..11111 (the largest positive number)\
+			10000000000..00000 \
+	(the smallest negative number) if the largest positive number + 1...\
+\
+\
+# ---------------------------------------- String ---------------------------------------- #\
+\
+A string is an ordered sequence of 0 or more characters.\
+Here we introduce 2 functions: 
+\f2\b getline(cin,s)
+\f0\b0  and 
+\f2\b cin.ignore(10000, '\\n')
+\f0\b0 \
+\
+Spec:\
+********************************************\
+	
+\f1 What is your name? 
+\f4\i Sir Robin
+\f1\i0 			\
+	How old are you? 
+\f4\i 32
+\f1\i0 						\
+	What is your quest? 
+\f4\i to seek the Holy Grail
+\f1\i0 	\
+										\
+	Hello, brave Sir Robin!					\
+	You want to seek the Holy Grail.			If you live, next year you will be 33.
+\f0 \
+********************************************\
+\
+If we use cin >> it will only read \'93Sir\'94.\
+So we use 
+\f2\b getline()
+\f0\b0  function. \cf2 (getline will get the whole line including '\\n')\cf0 \
+\
+programDoing		OSwrite		OShold		availabelToProgram \
+----------------------------------------------------------             \
+getline(cin, s)								program waits\
+you type x		x				x			program waits                         \
+you type y		y				xy			program waits                        \
+you type bksps	bks/sps/bks	x                                                          \
+you type z		z				xz	                                      \
+you hit ENTER		CRLF						x z newline character\
+												store x in string \
+												and then throw the \'93\\n\'94 away\
+\
+cin >> l										program waits\
+you type 3		3				3\
+you type 2		2				2	\
+you hit ENTER		CRLF						3 2 newline character  \
+												cin >> l executes, \
+												setting l to be 32 \
+												and leave the \'93\\n\'94 there\
+\
+getline(cin, s)								getline() executed\
+\
+\
+The getline() function consumes the newline (thought it later throw it away). However, cin doesn't do so.\
+\
+getline: if there is any character after reading the number 32? Yes, there is a newline character. So it will take that as a line.\
+\
+Consider the\'a0function\'a0below\
+		\
+		cin.ignore(120,'/n')\
+\
+The particular\'a0function\'a0skips the next 120 input character or to skip the characters until a newline character is read. \
+The function choose either \'93120\'94 or "\\n", depending on the number ignored.\
+\
+## ---------------------------------------- Code ---------------------------------------- ##\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf3 // we normally write cin.ignore(10000,'/n') to make sure we ignore everything after the integer.\cf0 \
+\
+	cout << "What is your name? ";\
+	string personsName;	\
+		\cf3 // we need the whole line of input, including blank space.\cf0 \
+\
+	getline(cin, personsName);	\
+\cf3 		// this lets the user to type in a string, 		//	and it helps store the whole line he typed into str.\
+\cf0 \
+	cout << "How old are you? ";\
+	int age;\
+	cin >> age;\
+	
+\f5\b \cf4 cin.ignore(10000, '\\n');
+\f1\b0 \cf0 	\
+\
+	cout << "What is your quest? ";\
+	string quest;\
+	getline(cin, quest);\
+\
+	cout << "Hello, brave " << personsName << "!" << endl;\
+	cout << "You want " << quest << "." << endl;\
+	cout << "If you live, next year you will be " << (age+1) << endl;\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+\
+}

@@ -1,0 +1,362 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fmodern\fcharset0 Courier;\f2\fmodern\fcharset0 Courier-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue255;\red251\green2\blue7;\red251\green2\blue7;
+\red0\green0\blue255;\red253\green128\blue8;\red0\green0\blue0;\red251\green2\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c25279\c100000;\cssrgb\c100000\c14913\c0;\cssrgb\c100000\c14913\c0;
+\cssrgb\c1680\c19835\c100000;\cssrgb\c100000\c57637\c0;\cssrgb\c0\c0\c0;\cssrgb\c100000\c25279\c100000;}
+\margl1440\margr1440\vieww23220\viewh19280\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Dec.3 - M - Lec 18\
+\
+	Destructor + Default Constructor\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # --------------------------------------------------------------------------- #
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	void f()\
+	\{\
+		while (\'85)\
+			playGames();\
+	\}\
+\
+	void playGames()\
+	\{\
+		\cf2 Target* targets[1000];	// It is cheap to create pointers.\cf0 \
+		int nTargets = 0;\
+		...\
+		if(...)\
+			addTarget(targets, nTargets, 3);\
+		...\
+		int i;\
+		... something gives i a value, say 1.\
+		targets[i]->move('R');\
+\
+\
+		\cf2 delete targets[1];\cf0 	\
+			// We are not deleting the pointer, but the pointee.\
+			// Dangling pointer.\
+\
+		targets[1] = targets[2];		\
+		nTargets--;\
+		target[2] = nullptr;\
+		\
+			// We must add these lines		\
+\cf2 		for (int i=0; i!=nt; i++)\
+			delete targets[i];\cf0 \
+	\}\
+\
+	void addTargets(Target* ta[], \cf3 int& nt\cf0 , int howManyNewOnes)\
+	\{\
+		for (int k = 0; k < howManyNewOnes; k++)\
+		\{\
+			\cf3 ta[nt] = new Target\cf0 ;						nt++;						\
+		\}\
+	\}\
+\
+\
+	// When we leave the playGame function, every local variables goes away,\
+	// but the dynamically allocated memory (variable) will not go away.\
+	// This is a major memory leak. Every time we call the function playGame, \
+	// we get some garbage.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 # --------------------------------------------------------------------------- #
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ----------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	Named local variables ("automatic variables")\
+		Live on the "stack"\
+\
+	Variables declared outside of any function \
+		Live in the "global storage area" - for example 
+\f2\b const
+\f1\b0 \
+		aka ("the static storage area")\
+	\
+	Dynamic storage lives on the "heap".\
+		They will not go away until we call 
+\f2\b \cf4 delete
+\f1\b0 \cf0 .\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ----------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	class Toy\
+	\{\
+	\
+	\};\
+\
+	class Pet\
+	\{\
+   	  public:\
+		Pet(string nm, int initialHealth);\
+		
+\f2\b ~Pet();
+\f1\b0 \
+		void addToy();\
+		// void cleanUp();\
+		...\
+\
+  	  private:\
+		string m_name;\
+		int m_health;\
+		\cf3 Toy* m_favoriteToy\cf0 \
+	\};\
+\
+	+---------+\
+	|   name	|\
+	+---------+\
+	|  health	|\
+	+---------+\
+	|	*Toy	|\
+	+---------+	\
+		  |\
+		  |\
+		  +----------> Toy\
+\
+\
+	Pet::Pet(string nm, int initialHealth)\
+	\{\
+		m_name = nm;\
+		m_health = initialHealth;\
+		m_favoriteToy = nullptr;\
+	\}	\
+\
+	Pet::~Pet()\
+	\{\
+		delete p.m_favoriteToy;\
+	\}\
+\
+	void Pet::addToy()\
+	\{\
+		delete m_favoriteToy; 		// (**) It is okay to delete the nullptr.\
+		m_favoriteToy = new Toy;\
+	\}\
+\
+	///////////////////////////////////////////\
+	void Pet::cleanUp()\
+	\{\
+		delete p.m_favoriteToy;\
+	\}\
+	///////////////////////////////////////////\
+\
+	void f()\
+	\{\
+		pet p("Frisky", 20);\
+		p.addToy();\
+		\cf3 	// If we leave the function f, memory leak.\
+			// delete p.m_favorite; \
+			// Wrong, we don't have access to private members\cf0 .\
+			// We can use the cleanUp function, \
+			// but what if we return the function here.\
+		p.cleanUp();\
+	\}\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf5 	// Destructor automatically cleanUp.\
+	// It is automatically called when an object is about to go away.\cf0 \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ---------------------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	A destructor is a member function that is called automatically when an object\
+		of a class passes out of scope.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2\b \cf3 	The destructor should use delete to eliminate any dynamically allocated \
+		variables created by the object.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ---------------------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## --------------------------------- Example --------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	#include <iostream>\
+	#include <cstring>\
+	#include <cctype>\
+	using namespace std;\
+\
+	class Cat \{\
+		public:\
+    		Cat(string name) \{\
+      			cout << "I am a cat: " << name << endl;\
+      			m_name = name;\
+    		\}\
+   			\cf2 ~Cat() \{ cout << "Farewell, meow." << endl; \}\cf0 \
+  		private:\
+   	 		string m_name;\
+	\};	\
+\
+	class Person \{\
+		public:\
+  			Person(int age) \{\
+    			cout << "I am " << age << " years old. ";\
+    			m_cat = new Cat("Alfred");\
+    			m_age = age;\
+  			\}\
+\cf2   			~Person() \{ cout << "Goodbye!" << endl; \
+  				delete m_cat;		// (*)\
+  			\}\cf0 \
+		private:\
+ 			int m_age;\
+  			Cat *m_cat;\
+	\};\
+\
+	int main() \{\
+ 		Person p(21);\
+	\}\
+\
+	
+\f2\b output:
+\f1\b0 \
+	I am 21 years old. I am a cat: Alfred\
+	Goodbye!		<------ the destructor of Person clean Person first.\
+\cf2 	Farewell, meow.	<------ then the destructor of Person \
+							delete the cat ------> calls the destruction of cat.\cf0 \
+\
+	\cf3 without this line delete m_cat;	// (*)\cf6 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf7 	output:\cf6 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 	I am 21 years old. I am a cat: Alfred\
+	Goodbye!								// Memory leak.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf6 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ------------------------------------------------------------------ ##\
+\
+	Let's go back to 
+\f1 class Pet\cf3 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	// For any 
+\f2\b local variable
+\f1\b0  of the class type: check if there is anything to delete.\
+\
+	// When the destructor finish destroying memory space in heap, \
+	// the compiler then destroy the local variables.\
+\
+	// For example, the string type has destructor.\
+		\
+	+---------+\
+	|    +		|-------------> "Hello" (heap)\
+	+---------+\
+	|  string	|\
+	+---------+\
+\
+\
+	// Destructor can do any cleanUp that should be done when the object is about to go away.\
+	// This include more than delete dynamically allocated memory.\
+	// For example we can remove the object from the screen (display) when it doesn't exist anymore.\
+	\
+\
+\
+	
+\f2\b // Problem 1:
+\f1\b0 \
+	\
+		// What will happen if we addToy twice?\
+		// We get memory leak, so we need to add a line (**).\
+		// The code above is correct after adding line (**).\
+\
+		// It's okay to delete the nullptr,\
+		// so we don't have to check that in the destructor.\
+		// It is okay is a Pet never gets a Toy object.\
+\
+\
+	
+\f2\b // Problem 2:
+\f1\b0 \
+\
+		Pet* pp;\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 		pp = new Pet;		// Wrong.\cf0 \
+\
+		// If you declare no constructor at all,\
+		// the compiler will write a default constructor for you.\
+		// (A zero argument constructor) for you that leaves members of builtin types\
+		// uninitialized and default-constructs members of class type.\
+\
+		+---------+\
+		|    ""	|	-> empty string\
+		+---------+\
+		|    ??	|\
+		+---------+\
+		|    ??	|\
+		+---------+\
+\
+		// So we have to do:\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 		pp = new Pet("Fido", 10);\
+		pp->addToy();	\cf0 \
+	\
+		// When pp goes away, this destructor doesn't work as pp is not an object \
+		// but a pointer to a Pet object.\
+\
+		Pet* pp;\
+		pp = new Pet("Fido", 10);\
+		pp->addToy()\
+		delete pp;		\
+\
+	
+\f2\b \cf8 // The number of delete should fit the number of new.
+\f1\b0 \cf0 \
+\
+	class Target()\
+	\{\
+		public:\
+			Target();\
+	\}\
+\
+	Target t;\
+	\
+	Employee arr[100];		// Uninitialized name / salary / age and empty string\
+	Target arr[100];			// Position 0 and empty string\
+	string arr[100];			// Each an empty string.\
+\cf4 	X Pet arr[100];			// Wrong. Pet doesn't have default constructor.\
+								// We cannot declare an array of Pet.\cf0 \
+	\
+	// What if we set a default constructor.\
+		>> there is no default state...\
+		>> any default value doesn't make any sense...\
+		\
+	// But we really need a collection of it!!\
+	// We can have \cf2 an array of pointers that point to Pet\cf0 (s).\
+	\
+\
+\
+\
+\
+\
+\
+\
+}

@@ -1,0 +1,391 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fmodern\fcharset0 Courier;\f2\fmodern\fcharset0 Courier-Oblique;
+\f3\fnil\fcharset0 Menlo-Italic;\f4\fmodern\fcharset0 Courier-BoldOblique;\f5\fnil\fcharset0 Menlo-BoldItalic;
+\f6\fmodern\fcharset0 Courier-Bold;}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue255;\red0\green0\blue255;\red127\green127\blue127;
+\red127\green0\blue128;\red251\green2\blue7;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c25279\c100000;\cssrgb\c1680\c19835\c100000;\cssrgb\c57046\c57047\c57046;
+\cssrgb\c57919\c12801\c57269;\cssrgb\c100000\c14913\c0;}
+\margl1440\margr1440\vieww25760\viewh19880\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Oct. 22 - M - Lec 7\
+\
+Parameter + Passing by Value and by Reference\
+\
+# -------------------------------------------------------------------------------- #\
+\
+	The structure of code:\
+		\
+	\cf2 	// Put the main function at first\
+		// Put the prototype before main function\
+		// Implement them after main function\cf0 \
+\
+
+\f1 	type something();\
+\
+	int main recipe() \
+	\{\
+		...\
+		...\
+		...\
+		...\
+ 		something();\
+		...\
+	\}\
+\
+	
+\f2\i type
+\f1\i0  something() \
+	\{ \
+		...\
+	\}
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ---------------------------------------- Parameter ---------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+\cf3 Now we are going to introduce the concept of "parameter".\cf0 \
+	\
+Suppose we have a function which makes ice-cream,\
+	and there are several flavors.\
+\
+		lemon...\
+		orange..\
+\
+	
+\f3\i If we want an ice-cream with specific flavor, we call the function and specify that we use orange as flavoring.
+\f0\i0 \
+\
+	The name using in parenthesis \
+	>> when \cf3 define	\cf0 => 
+\f3\i \cf3 parameter
+\f0\i0 \cf0  to the function\
+	>> when \cf3 calling\cf0 	=> 
+\f3\i \cf3 argument
+\f0\i0 \cf0  of the function \
+\
+	======\
+	\
+	For example, we have 2 parameter for the function 
+\f1 greet()
+\f0 :\
+\
+	
+\f1 	int 		nTime\
+		string		msg
+\f0 \
+\
+\
+	So, we write greet() like this: \
+		\
+		
+\f4\i\b \cf2 void
+\f0\i0\b0 \cf0  
+\f1 greet(\cf3 int nTime, string msg\cf0 );
+\f0 \
+\
+\cf4 		// Because the function is making a copy of its argument, \
+		// When the function is terminated, no change will remain.\
+\
+		// What if we assign a new value to msg?\
+		// >> No change will remain, msg is a copy\
+	\
+		// If the return type of greet function is void, \
+		// It doesn't return anything.\
+\
+		// If a function returns 
+\f5\i\b \cf4 void
+\f0\i0\b0 \cf4 , 
+\f5\i\b \cf4 its return cannot have expression
+\f0\i0\b0 \cf4 , \
+		// Like 
+\f1 return 3
+\f0 ; is illegal.\
+	\
+		// If a function returns int/double/string...		//	Any return statement must have an expression.\cf0 \
+\
+	======\
+	implementation\
+\
+
+\f1 	void greet(int nTimes, string msg);	\cf4 // declare the prototype before use\cf0 \
+\
+	int main()\
+	\{\
+		greet(3, "Hi");\
+	\}\
+\
+	void greet(int nTimes, string msg)	\
+	\{\
+		for (int k = 0; k < nTimes; k++)	\cf4 // while loop, do while loop work too\cf0 \
+			cout << msg << endl;\
+	\}\
+
+\f0 \
+\
+# -------------------------------------------------------------------------------- #\
+	\
+	Code Example: Phone Number\
+\
+
+\f1 		Enter a phone number: (310) 825-4321\
+		The digits in the number are 3108254321
+\f0 \
+\
+	
+\f1 #include <iostream>\
+	#include <string>\
+	#include <cctype>\
+	using namespace std;\
+\
+	bool isValidPhoneNumber(string pn);  \cf4 // prototype\cf0 \
+	string digitsOf(string pn);			\cf4 // prototype\cf0 \
+\
+	int main()\
+	\{\
+		cout << "Enter a phone number: ";\
+		string phone;\
+		getline(cin, phone);\
+\
+		if (isValidPhoneNumber(phone))\
+		\{\
+			cout << "The digits in the number are " << digitsOf(phone) << endl;\
+		\}\
+		else\
+		\{\
+			cout << "A phone number must have 10 digits" << endl;\
+		\}\
+	\}\
+\
+	bool isValidPhoneNumber(string pn)\
+	\{\
+		int numberOfDigits = 0;\
+		for (size_t k = 0; k < pn.size(); k++)\
+		\{\
+			if(isdigit(pn[k]))\
+			\{\
+				numberOfDigits++;\
+			\}\
+		\}\
+		return (numberOfDigits == 10);\
+	\}\
+\
+	string digitsOf(string pn)\
+	\{\
+		string digitsOnly ="";\
+		for(size_t k=0; k != pn.size(); k++)\
+		\{\
+			if(isdigit(pn[k]))\
+			\{\
+				digitsOnly += pn[k];	\cf4 // append a copy that character into the string\cf0 \
+			\}		\
+		\}\
+		return digitsOnly;\
+	\}\
+
+\f0 \
+## ----------------------------------- More on the Bool Type ----------------------------------- ##\
+\
+	boolean, named after George Boole\
+	boolean variable only has 2 values: false and true (OR zero and non-zero) \
+\
+
+\f1 		if (numberOfDigits == 10)\
+			return true;\
+		else\
+			return false;
+\f0 \
+\
+	The code above can be written as return \
+		\
+		
+\f1 \cf3 (numberOfDigits == 10);
+\f0 \cf0 \
+---------------------------------------------------------------------------\
+\
+\
+# -------------------------------------- \cf3 Passing Reference vs. Passing Value\cf0  -------------------------------------- #\
+\cf3 	\
+	So far, we have been passing in "values" into functions. \
+	\
+	We say that we pass arguments by value.\
+	\
+	This method does not allow you access variable outside.\
+	\
+	We will make a way to access an outside variable now.\cf0 \
+\
+
+\f1 	
+\f4\i\b \cf2 void
+\f1\i0\b0 \cf0  polarToCartesian(double rho, double theta, double\cf2 &\cf0  xx, double\cf2 &\cf0  yy);		\
+	\cf4 	// What is this ampersand xx: it is a reference to a variable, \
+		//	The original variable, not a copy variable.\
+\
+		// We can also say it is another name of an existing variable.\
+		// The variable it references to is what is passed from main() function.\
+\cf0 \
+	int main()\
+	\{\
+		double r;\
+		double angle;\
+		...		// get values for r and angle.\
+		double x;\
+		double y;\
+		polarToCartesian(r, angle, x, y);\
+\
+		double x2;\
+		polarToCartesian(2*r, angle, x2, y);\
+\
+	\}
+\f0 \
+\
+
+\f1 	
+\f6\b void polarToCartesian(double rho, double theta, double\cf5 &\cf0  xx, double\cf5 &\cf0  yy)\
+
+\f1\b0 	\{	\
+		xx = rho * cos(theta);			      \
+		yy = rho * sin(theta);\
+	\}	\
+\
+\cf4 		// In the function polarToCartesian, \
+		// Whenever we access xx and yy, we are actually accessing x and y in main.\
+	\
+		// When function terminated, \
+		// We will destroy the memory space for polarToCartesian, \
+		// 
+\f6\b \cf4 But the changes made to x and y will remain
+\f1\b0 \cf4  
+\f6\b \cf4 and will be store into x and y in main
+\f1\b0 \cf4 . 
+\f0 \cf0 \
+\
+
+\f1 \
+			// if not passing by reference\
+	\
+		main()								polarToCartesian()\
+	---------------------------------------------------------\
+		r|5|									rho |5|\
+		angle |0|								theta |0|\
+		? 										xx		? 										yy\
+\
+\
+			// if passing by reference\
+\
+		main()								polarToCartesian()\
+	---------------------------------------------------------\
+		r|5|									rho |5|\
+		angle |0|								theta |0|\
+		save xx to x 							xx (is variable x)		save yy to y 							yy (is variable y)
+\f0 \
+\
+\
+## ----------------------------------- Important Remark ----------------------------------- ##\
+										
+\f1 \
+	int plusOne(int &x)		\cf4 // the same as int& x\cf0 .\
+	\{\
+		return 
+\f6\b x = x + 1
+\f1\b0 ;	\cf4 // This change the value of a variable.\cf0 \
+	\}\
+\
+	int main()\
+	\{\
+		int z = 0;\
+		cout << plusOne(z);\
+		cout << z;\
+	\}\
+
+\f0 \
+	_________\
+	output:11\
+\
+\
+
+\f1 	int plusOne(int &x)\
+	\{\
+		return x + 1;		\cf4 // This will not store any value.\cf0  \
+	\}\
+\
+	int main()\
+	\{\
+		int z = 0;\
+		cout << plusOne(z);\
+		cout << z;\
+	\}
+\f0 \
+\
+	_________\
+	output:10\
+\
+\
+# -------------------------------------- \cf3 Void as the Return Type\cf0  -------------------------------------- #\
+\
+Functions of return type 
+\f5\i\b void
+\f0\i0\b0  cannot return any value.\
+If you need a return statement to terminate the function, you can just say \'93return;\'94 \cf6 (must) without any value\cf0 .\
+---------------------------------------------------------------------------\
+\
+\
+# -------------------------------------- More on String -------------------------------------- #\
+\
+
+\f1 	string s = "hello";		// Declare s and s2\
+	string s2 = "!!!";		 \
+	\
+	s.length() 				// Return the length of s\
+	s.size()		\
+\
+	s[i]						// Return i-th character. \
+								// i must be an integer between 0 and s.size() - 1 (inclusive).\
+\
+	s.empty()					// Return true if s is empty\
+\
+	\
+	s + s2;					// String concatenate\
+	s + "!";\
+\
+	s.substr(i, n)			\
+	cout << s.substr(2,2);	// prints "ll".\
+	\
+	s.substr(i)				\
+	cout << s.substr(2);	// prints "llo".\
+\
+\
+	s.replace(i, n, s2)		// Replaces a substring of length n starting at i with 								// another string s2, and sets s with a new string.\
+	\
+	s.replace(2, 2, s2);	// Sets s to "he!!!o.\
+\
+
+\f0 ---------------------------------------------------------------------------
+\f1 \
+\
+
+\f0 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

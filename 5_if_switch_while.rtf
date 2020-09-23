@@ -1,0 +1,457 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset0 Menlo-Bold;\f2\fmodern\fcharset0 Courier;
+\f3\fmodern\fcharset0 Courier-Bold;\f4\fnil\fcharset0 Menlo-BoldItalic;\f5\fnil\fcharset0 Menlo-Italic;
+\f6\fmodern\fcharset0 Courier-BoldOblique;\f7\fmodern\fcharset0 Courier-Oblique;}
+{\colortbl;\red255\green255\blue255;\red127\green127\blue127;\red0\green0\blue255;\red251\green2\blue7;
+\red251\green2\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c57046\c57047\c57046;\cssrgb\c1680\c19835\c100000;\cssrgb\c100000\c14913\c0;
+\cssrgb\c100000\c25279\c100000;}
+\margl1440\margr1440\vieww24180\viewh19880\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Oct. 15 - M - Lec 5\
+\
+
+\f1\b if + switch + while\
+\
+
+\f0\b0 # -------------------------------------------------------------------------------- #\
+\
+	&& and ||\
+\
+	
+\f2 expression 
+\f3\b &&
+\f2\b0  expression
+\f0 		"and"\
+	
+\f2 expression 
+\f3\b ||
+\f2\b0  expression
+\f0 		"or"\
+\
+		\cf2 // for example, if we have the following code:\cf0 \
+	\
+	
+\f2 if (a/b + c/d > 10)\
+	\{\
+		...\
+	\}	
+\f0 \
+		\
+		\cf2 // what if b or d is zero?\
+\cf0 		\cf2 // undefined behavior if b or d = 0\
+\cf0 		\cf2 // we can eliminate this problem by saying\cf0 \
+	\
+
+\f2 	if (b != 0 && d != 0 && a/b + c/d > 10)\
+	\{\
+		...	\
+	\}		\
+
+\f0 \
+## ---------------------------------------------------------------------- ##\
+\
+	Since the if statement will be compiled from left to right.,\
+	we should put the b == 0 at left:\
+\
+	
+\f2 if (b == 0 || a/b > 0)
+\f0 \
+\
+	
+\f2 if (a/b > 0 || b == 0)	
+\f0 				\cf3 // undefined behavior if b or d = 0\cf0 \
+\
+\
+\
+\
+\
+\
+
+\f2 	if (citizenship == "us" || citizenship == "canada")\
+	\{\
+		cout << "The country code is 1" << endl;\
+	\}\
+		\cf2 // correct\cf0 \
+\
+
+\f0 \
+
+\f2 	\cf4 if (citizenship == "us" || == "canada") \cf0    \
+		\cf2 // error\cf0 \
+	\cf4 if (citizenship == "us" || "canada")	\cf0 		\cf2 // will compile, but will always be true since "canada" is not 0
+\f0 \cf0 \
+\
+## ---------------------------------------------------------------------- ##	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 Use && and || carefully: && has higher precedence than ||\cf0 \
+\
+Think about the statement below\
+\
+		
+\f4\i\b if
+\f0\i0\b0  your major is computer science \
+		or your major is computer engineering \
+		and your GPA is greater >= 3.0...\
+			then you can...\
+\
+	
+\f2 \cf4 if (citizenship == "us" || citizenship == "canada" && age >= 18)\
+		// WRONG! if a us citizen who is 17... it's true
+\f0 \cf0 \
+\
+	\
+\cf3 Use () parenthesis when writing a mixture of && and ||.\cf0 \
+\
+## ---------------------------------------------------------------------- ##\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	int n = 17;\
+	cout << "n is " << n << endl;\
+\
+	if (n = 0)	\cf2 <----------- // it can compile, but warning. it will assign 0 to n.\cf0 \
+		cout << "n is zero" << endl;\
+	else\
+		cout << "n is not zero; " << "n is " << n << endl;
+\f0 \
+	\
+	*****************************\
+	
+\f2 output:				\
+	
+\f3\b n is 17
+\f2\b0 				\
+	n is not zero; 
+\f3\b n is 0
+\f2\b0 	
+\f0 \
+	*****************************\
+\
+	\cf3 0 -------------------> false\
+	Anything non-zero ----> OK\cf0 \
+\
+\
+## ---------------------------------------------------------------------- ##\
+\
+What is a good code style?\
+\
+		\cf2 // The code below is hard to read since the if statement is too long\cf0 \
+
+\f2 	\
+	if (citizenship != "us" || age <= 18)\
+	\{\
+		...\
+		...\
+		...\
+	\}\
+\
+	else\
+		cout << "You can vote in us election."
+\f0 		\
+\
+		\cf2 // Generally, the small branch is the true part\cf0 \
+\
+	
+\f2 if (\cf4 citizenship != "us" || age <= 18\cf0 )			\cf2 // WRONG statement!\cf0 \
+		cout << "You can vote in us election."	\
+	else \
+	\{\
+		...\
+		...\
+		...\
+	\}\
+\
+\
+
+\f0 ### ------------------------------------------------------------ ###\
+\
+	
+\f2 if (\cf4 citizenship == "us" || age >= 18\cf0 )			\cf2 // WRONG!\cf0 \
+		cout << "You can vote in us election."	\
+	else \
+	\{\
+		...\
+		...\
+		...\
+	\}\
+
+\f0 \
+\
+\
+
+\f2 	if (\cf4 citizenship == "us" && age >= 18\cf0 )			\cf2 // Yes!\cf0 \
+		cout << "You can vote in us election."	\
+	else \
+	\{\
+		...\
+		...\
+		...\
+	\}\
+
+\f0 \
+	\
+## ---------------------------------------------------------------------- ##\
+\
+	
+\f2 if (rating < 1 || rating > 10)\
+		\
+		\cf5 // which one of the line below is the INVERSE of line above\cf0 \
+\
+	if (rating >= 1 || rating <= 10)				// WRONG!\
+	if (rating >= 1 && rating <= 10)				// Correct!\
+
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f5\i \cf0 	\cf3 De Morgan's law\
+		not (a or b) --> not a and not b \
+		not (a and b) --> not a or not b\
+\
+		not (a < b) --> a >= b\
+		not (a <= b) --> a > b\
+		...
+\f0\i0 \cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	if (citizenship == "us" || citizenship == "canada")\
+		// the INVERSE of the line above is\
+	if (citizenship != "us" && citizenship != "canada")
+\f0 \
+\
+# -------------------------------------------------------------------------------- #\
+				\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf5 Now, consider that we have many conditions.\
+	\cf0 "if ladder" (push to the right)\
+							\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	if (income < 30000)\
+		cout << "low";\
+	else\
+		if (income < 100000)\
+			cout << "middle";\
+		else\
+			if (income < 500000)\
+				cout << "high";\
+			else\
+				cout << "very high";\
+\
+		\cf5 // the code above is the same as the code below\cf0 \
+\
+	if (income < 30000)\
+		cout << "low";\
+	else if (income < 100000)\
+		cout << "middle";\
+	else if (income < 500000)\
+		cout << "high";\
+	else\
+		cout << "very high";
+\f0 \
+\
+\
+## ------------------------- switch Statement ------------------------- ##\
+				\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 What if we have too many conditions?\
+Writing if-else statements is a pain.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 \
+	cout << "How many people? ";\
+		int numPeople;\
+	cin >> numPeople;\
+\
+	if (numPeople == 0)\
+		cout << "Nobody";\
+	else if (numPeople == 1)\
+		cout << "One lonely person";\
+	else if (numPeople == 2)\
+		cout << "A happy couple";\
+	else if (numPeople == 3 || numPeople == 4)\
+		cout << "A few people";\
+	else\
+		cout << "A lot of people";\
+	cout << "done";\
+			\
+		\cf3 // in this situation, we can implement our 
+\f3\b switch
+\f2\b0  statement feature\
+\cf0 \
+	switch(numPeople)	\
+	\{\
+		case 0:\
+			cout << "Nobody";\
+			
+\f6\i\b break;
+\f2\i0\b0 \
+		case 1:\
+			cout << "One lonely person";\
+			
+\f6\i\b break;
+\f2\i0\b0 \
+		case 2:\
+			cout << "A happy couple";\
+			
+\f6\i\b break;
+\f2\i0\b0 \
+		case 3:\
+		case 4:\
+			cout << "A few people";\
+			
+\f6\i\b break;
+\f2\i0\b0 \
+		default:\
+			cout << "A lot of people";\
+	\}\
+	cout << "done";\
+
+\f0 \
+\
+## ------------------------- while Loop ------------------------- ##\
+				\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 What if we don't know how many conditions we will have?\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	cout << "How many time do you want to be greeted? ";\
+		int nTimes;\
+	cin >> nTimes;\
+	\
+	if (nTime >= 1)\
+		cout << "Hello";\
+	if (nTime >= 2)\
+		cout << "Hello";\
+	if (nTime >= 3)\
+		cout << "Hello";\
+	if (nTime >= 4)\
+		cout << "Hello";\
+	if (nTime >= 5)\
+		cout << "Hello";\
+	...
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 We need a new language structure to handle this problem.\
+\cf3 We can implement our 
+\f1\b while loop 
+\f0\b0 feature.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+	
+\f7\i \cf3 initialization
+\f0\i0 \cf0 \
+	
+\f2 while (
+\f7\i \cf3 condition
+\f2\i0 \cf0 )\
+	\{\
+		
+\f7\i statement\
+		\cf3 iteration\cf0 \
+	\}
+\f0\i0 \
+\
+		\cf2 // for example\cf0 \
+\
+\
+	
+\f2 int n = 0;				\cf2 // nTime = 3\cf0 \
+	while (n < nTimes)		\cf2 // n = 3\cf0 \
+	\{\
+		cout << "Hello";\
+		n++;\
+	\}\
+\
+	cout << "Good to see you." << endl;
+\f0 \
+\
+\
+## ------------------------- do while Loop ------------------------- ##\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 We will now introduce the 
+\f1\b do while loop 
+\f0\b0 feature\cf0 \
+\
+		
+\f7\i \cf3 initialization
+\f2\i0 \cf0 \
+		do\
+		\{\
+			
+\f7\i \cf3 statement
+\f2\i0 \cf0 	\
+			
+\f7\i \cf3 iteration
+\f2\i0 \cf0 \
+		\} while (condition)\cf5 ;
+\f0 \cf0 \
+\
+\
+	
+\f2 	// for the same example\
+\
+	int n = 0;	\
+	do\{\
+		cout << "Hello";\
+		n++;\
+	\} while (n < nTimes);\
+	\
+		cout << "Good to see you." << endl;
+\f0 \
+\
+							\
+\cf4 !!! Pay Attention !!!\
+	\
+		
+\f2 if nTime = 0 \
+					// even if nTime = 0, \
+					// the do while loop will still print out "Hello" for once
+\f0 \
+\
+	Do while loop will always "do" once before checking the condition. be careful!!!\cf0 \
+\
+\
+----------------------------------------\
+Quickly introduce a new feature:\
+		\
+	
+\f2 	m = m + 7 ==> m += 7\
+		m = m / 2 ==> m /= 2\
+\
+			\cf2 // these 3 are 
+\f3\b \cf2 almost
+\f2\b0 \cf2  the same\cf0 \
+		
+\f0 m++	;\
+		m += 1;\
+		++m;\
+		\
+			
+\f2 \cf2 // these 3 are 
+\f3\b \cf2 almost
+\f2\b0 \cf2  the same
+\f0 \cf0 \
+		n--	;\
+		n -= 1;\
+		--n;\
+----------------------------------------\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

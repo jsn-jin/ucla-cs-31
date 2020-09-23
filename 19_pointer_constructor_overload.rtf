@@ -1,0 +1,426 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fmodern\fcharset0 Courier;\f2\fmodern\fcharset0 Courier-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue7;\red251\green2\blue7;\red0\green0\blue255;
+\red251\green2\blue255;\red127\green127\blue127;\red253\green128\blue8;\red0\green0\blue0;\red33\green255\blue6;
+\red33\green255\blue6;\red251\green2\blue255;\red127\green0\blue128;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c14913\c0;\cssrgb\c100000\c14913\c0;\cssrgb\c1680\c19835\c100000;
+\cssrgb\c100000\c25279\c100000;\cssrgb\c57046\c57047\c57046;\cssrgb\c100000\c57637\c0;\cssrgb\c0\c0\c0;\cssrgb\c0\c97680\c0;
+\cssrgb\c0\c97680\c0;\cssrgb\c100000\c25279\c100000;\cssrgb\c57919\c12801\c57269;}
+\margl1440\margr1440\vieww23320\viewh19280\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Dec. 5 - W - Lec 19\
+\
+	Constructor Overload / Mutual Pointers / Array of Pointers
+\f1 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 # --------------------------------------------------------------------------- #
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+	// How to declare an object with different constructors?\
+\
+	Pet p("Fido", 10);\
+	Pet *pp = new Pet("Fluffy", 20);\
+\
+	// What about a constructor that takes no arguments?\
+\
+	Target t;\
+	Target *tp = new Target;		// Good style.\
+	Target *tp = new Target();		// Fine, but don't do this.\
+\
+	\cf2 Target t2();						\cf3 // No error. t2 is a name of a function.\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 	t2.move('R');						// Compilation error.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	// Why should we include pointers instead of object?\
+	// Suppose we have 2 courses and many students in UCLA.\
+	// We have 2 classes: course and student.\
+	// And each courses has an array of \cf2 student objects\cf0 .\
+\
+				Class: Course\
+				cs 31	        	math 32a\
+				+---------+		+---------+\
+				|	info	|		|	info	|\
+				+---------+		+---------+\
+				|student[]|		|student[]|\
+				+---------+		+---------+\
+\
+				Class: Student\
+				student1\
+				+---------+\
+				|	name	|\
+				+---------+\
+				|	email	|\
+				+---------+\
+\
+				student2\
+				+---------+\
+				|	name	|\
+				+---------+\
+				|	email	|\
+				+---------+\
+				\
+\
+	// This is not a good way. What if we want to change the attributes of student objects.\
+	// Then we will have to find all the class this student enrolled in and change the info.\
+	// We'd better use \cf4 pointers\cf0 . 
+\f2\b \cf5 An array of pointers pointing to different student object use new
+\f1\b0 \cf0 .\
+\
+\
+				cs 31	  		math 32a\
+				+---------+	+---------+\
+				|	info	|	|	info	|\
+				+---------+	+---------+\
+				|	st*[]	|	|	st*[]	|\
+				+---------+	+---------+\
+				|	m_nSt	|	|	m_nSt	|\
+				+---------+	+---------+\
+				^	|					|	^\
+				|	|					|	|\
+				|	|					|	|\
+				|	|					|	|\
+				|	|					|	|\
+				|	|					|	|\
+				|	+----> st1 <----	+	|	\
+				|			| |				|\
+				+---------+ +----------	+\
+\
+\
+	// cs 31 points to students.\
+	// Each student points to his/her courses.\
+	// So that we can know how many students in each course and\
+	// how many courses each student take.\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ------------------------- A Simpler Example ------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	class Fan\
+	\{\
+		...\
+		public: \
+			void turnOn();\
+	\};\
+\
+	class Rock\
+	\{\
+		...\
+		public: \
+			double weight() const;\
+	\};\
+\
+	class Robot\
+	\{\
+		public:\
+			...\
+			void	blah();\
+		private:\
+			...\
+			Fan		m_cooler;	\cf6 // When the robot goes away, Fan goes away.\cf0 \
+			Rock*	m_rock;	\cf6 // When the robot goes away, rocks can be kept.\cf0 \
+	\};\
+\
+	void Robot::blah()\
+	\{\
+		if (m_rock != nullptr && m_rock\cf2 ->\cf0 weight() >= 50)\
+		m_cooler\cf2 .\cf0 turnOn();	\cf6 // If the rock is too heavy, turn on the fan.\cf0 \
+	\}\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ------------------------- A Harder Example ------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	class Company;			// This line works like a prototype.\
+\
+	class Employee\
+	\{\
+		public:\
+			Employee(string nm, double sal, \cf7 Company* cp\cf0 );\
+			void			receiveBonus(double rate) \cf2 const\cf0 ;\
+		private:\
+			string 		m_name;\
+			double 		m_salary;\
+			\cf7 Company*		m_company;\cf0 \
+	\};	\
+\
+	class Company\
+	\{\
+		public:\
+			Company();\
+			~Company();\
+			void			hire(string nm, double sal);\
+			void			setBonusRate(double rate);\
+			void 			giveBonuses()	\cf2 const\cf0 ;							\cf6 // This function will not change the Company object.\cf0 \
+\
+			double			bonusRate() \cf2 const\cf0 ; \
+							\cf6 // Return the bonus rate.\cf0 \
+		private:\
+			Employee* 	m_employees[100];\
+			int 			m_nEmployees;	\
+			double 		m_bonusRate;\
+	\};\
+\
+	Employee::Employee(string nm, double sal, \cf7 Company* cp\cf0 )\
+	\{\
+		m_name = nm;\
+		m_salary = sal;\
+		\cf7 m_company = cp;\cf0 \
+	\}\
+	\
+	void Employee::receiveBonus\cf8 ()\cf0  \cf2 const\cf0 \
+	\{\
+		cout << "Pay to " << m_name << " $" << \cf7 m_company->bonusRate()\cf0  * m_salary << endl;\
+	\}\
+\
+	Company::Company()\
+	\{\
+		m_nEmployees = 0;\
+		m_bonusRate = 0;\
+		// No need to initialize pointers.\
+		// We leave those pointers 
+\f2\b uninitialized
+\f1\b0 .\
+	\}\
+\
+	Company::~Company()\
+	\{\
+		for (int i=0; i!=m_nEmployees; i++)\
+			delete m_employees[i];\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 		// for (int i = 0; i != 100; i++)	\
+		//		delete m_employees[i];	\
+	\
+		// Don't to this. deleting uninitialized pointer is no good.\
+		// This can be right only if we initialize all pointers to be nullptr.\cf0 \
+	\}\
+\
+	void Company::hire(string nm, double sal)\
+	\{\
+		if (m_nEmployees == 100)\
+			return;\
+		m_employees[m_nEmployees] = new Employee(nm, sal, 
+\f2\b \cf7 this
+\f1\b0 \cf0 );\
+		m_nEmployees++;\
+	\}\
+\
+	void Company::setBonusRate(double rate)\
+	\{\
+		m_bonusRate = rate;\
+	\}\
+\
+	void Company::giveBonuses() const\
+	\{\
+		for (int k = 0; k < m_nEmployees; k++)\
+\cf2 			// m_employees[k]->m_salary * (1+m_bonusRate); \
+			// Wrong. m_salary is a private member of Employee.\cf0 \
+		m_employees[k]->receiveBonus();\
+	\}	\
+\
+	double Company::bonusRate() \cf2 const\cf0 \
+	\{\
+		return m_bonusRate;\
+	\}\
+	\
+	int main()\
+	\{\
+		\cf4 Company myCompany\cf0 ;\
+		\cf9 myCompany.hire\cf0 ("Ricky", 80000);\
+		\cf9 myCompany.hire\cf0 ("Lucy", 50000);\
+		\cf4 Company yourCompany\cf0 ;\
+		\cf10 yourCompany.hire\cf0 ("Fred", 40000);\
+		myCompany.setBonusRate(0.02);\
+		myCompany.giveBonuses();\
+	\}\
+\
+	// Why we use an array of pointers to represent Employees?\
+	// I only want an employ when I hire them.\
+	// So Company will not have employ objects array.\
+\
+	// In real world, employee can stay even if the company goes away.\
+	// However, in this program, employees only exist when companies exists.\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ### -------------------------------------------------- ###
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	Why we need to put a pointer to company in Employee class (each object)?\
+	>> So that we can know the information about the company!\
+\
+	For example, in this case, we will know the bonus rate of the company, \
+	eliminating possible error (e.g. the rate to pass into the function is not\
+	the real bonus rate of the company).\
+\
+	void Employee::receiveBonus(\cf2 double rate\cf0 ) \cf2 const\cf0 \
+	\{\
+		cout << "Pay to " << m_name << " &" << rate * m_salary << endl;\
+	\}	// bad\
+\
+	void Employee::receiveBonus\cf2 ()\cf0  \cf2 const\cf0 \
+	\{\
+		cout << "Pay to " << m_name << " &" << 
+\f2\b \cf2 ????
+\f1\b0 \cf0  * m_salary << endl;\
+	\}	// bad\
+\
+	void Employee::receiveBonus\cf8 ()\cf0  \cf2 const\cf0 \
+	\{\
+		cout << "Pay to " << m_name << " $" << \cf7 m_company->bonusRate()\cf0  * 		m_salary << endl;\
+	\}	// good\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ### -------------------------------------------------- ###
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+# ---------------------------- Overload of Constructor ------------------------- #
+\f1 \
+\
+	class Complex\
+	\{\
+		public:\
+			
+\f2\b \cf5 Complex(double re, double im);\
+			Complex();
+\f1\b0 \cf0 \
+			double 	real() const;\
+			double 	imag()	 const;\
+		private:\
+			double		m_rho;\
+			double		m_theta;\
+	\};\
+\
+	Complex::Complex(double re, double im)\
+	\{\
+		m_rho = sqrt(re*re + im*im);\
+		m_theta = atan(im, re);\
+	\}\
+\
+	Complex::Complex()		\cf11 // Default constructor.\cf0 \
+	\{\
+		m_rho = 0;\
+		m_theta = 0;\
+	\}\
+\
+	double Complex::real() const\
+	\{\
+		return m_rho * cos(m_theta);\
+	\}\
+\
+	double Complex::imag()	const\
+	\{\
+		return m_rho * sin(m_theta);\
+	\}\
+\
+	int main()\
+	\{\
+		Complex c1(4, -3);\
+		cout << c1.real();\
+		\cf7 Complex ca[100];\cf0 		// Error if there is no default constructor.\
+	\}\
+\
+	// Sometimes, it is unnatural for there to be a default constructor for Student / Employee.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ### -------------------------------------------------- ###
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	String class has several constructors.\
+	\
+	string s1;\
+	string s2("Hello");\
+	string s3(10, 'x');\
+\
+	// You can overload a function name if the function differ in the number or types of parameters.\
+	// \cf12 C doesn't allow this.\
+\
+	|\
+	V\
+\cf0 (see below)\
+\
+	for C:\
+\
+	void drawRect(Rectangle r);\
+	void drawCirc(Circle c);\
+\
+	int main()\
+	\{\
+		Rectangle a;\
+		circle b;\
+		void drawRect(a)\
+		void drawCirc(b)\
+	\}	\
+\
+	for C++:\
+\
+	void draw(Rectangle r);\
+	void draw(Circle c);\
+\
+	int main()\
+	\{\
+		Rectangle a;\
+		circle b;\
+		void draw(a)\
+		void draw(b)\
+	\}\
+			\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ### -------------------------------------------------- ###
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	void f(int i);\
+	void f(double d);\
+\
+	int main()\
+	\{\
+		f(3);\
+		f(3.0);\
+		f('A')			// This works.\
+	\}\
+\
+\
+	void g(int i, double d);\
+	void g(double d, int i);\
+\
+	g(1,2);	// Error! ambiguous.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ### -------------------------------------------------- ###
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

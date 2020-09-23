@@ -1,0 +1,257 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset0 Menlo-Bold;\f2\fmodern\fcharset0 Courier;
+\f3\fmodern\fcharset0 Courier-BoldOblique;\f4\fmodern\fcharset0 Courier-Oblique;\f5\fnil\fcharset0 Menlo-Italic;
+\f6\fnil\fcharset0 Menlo-BoldItalic;}
+{\colortbl;\red255\green255\blue255;\red127\green127\blue127;\red251\green2\blue7;\red251\green2\blue255;
+}
+{\*\expandedcolortbl;;\cssrgb\c57046\c57047\c57046;\cssrgb\c100000\c14913\c0;\cssrgb\c100000\c25279\c100000;
+}
+\margl1440\margr1440\vieww22820\viewh19280\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Oct. 17 - W - Lec 6 \
+\
+
+\f1\b 	For Loop + String + Function\
+
+\f0\b0 \
+# -------------------------------------------------------------------------------- #\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	int main()\
+	\{\
+		int n = 0; \
+		while (n < nTimes) \{\
+		...\
+		...\
+		n++; 	\cf2 // don't forget to increment n\
+\cf0 	\}
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 	// when do we need an infinite loop? \
+	// >> traffic light (maybe)\
+	// embedded system: running continuously\cf0 \
+\
+\cf3 We need a new kind if loop!!!\
+Now we are going to introduce the feature of for loop.\cf0 \
+	\
+	
+\f2 for (
+\f3\i\b initialization
+\f2\i0\b0 ; 
+\f3\i\b stay-in-loop-condition
+\f2\i0\b0 ; 
+\f3\i\b prepare-for-next-iteration
+\f2\i0\b0 )\
+		
+\f4\i statement
+\f2\i0 \
+\
+	for (int n = 0; n 
+\f3\i\b <
+\f2\i0\b0  nTimes; n++)\
+	\{\
+		statement;\
+	\}
+\f0 \
+\
+	Benefit:\
+	1. All the control information is in ().\
+	2. Automatically prepared for next iteration (in case sometime we forget).\
+		
+\f5\i use a for loop if prepared for next iteration is part of the condition.
+\f0\i0 \
+\
+	\cf3 "off-by-one", "fencepost error"-> don't forget to check the boundary\cf0 \
+	\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	for (int n = 10; n >= 0; n--)\
+		cout << n << endl;\
+\
+	//	we can also declare n outside for loop:\
+	//	the benefit is that we can still access n after the for loop ends \
+\
+	int n = 0;			\
+	for (; n < nTimes; n++)\
+	\{\
+		cout << n << endl;\
+	\}\
+	cout << n << endl;\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+\
+# ---------------------------------------- Nested for Loop ---------------------------------------- #			\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	for (int r = 1; r <= 3, r++)\
+	\{\
+		for (int c = 1; c <= 4; c++)\
+		\{\
+			cout << "*";\
+		\}\
+		cout << "\\n";\
+	\}
+\f0 \
+\
+	
+\f2 // when you have several loops: be careful, trace back (make a table)
+\f0 \
+\
+			r		c\
+		--------------\
+			1		1\
+					2\
+					3\
+					4\
+					5 <-finish one loop\
+			2		1\
+					2\
+			.		.		\
+\
+\
+# ---------------------------------------- More on C++ Strings ---------------------------------------- #	\
+	// 
+\f6\i\b a[k]
+\f0\i0\b0  read as "a sub k"\
+	// The char(s) in a string are in various position, start at \cf4 0\cf0 \
+\
+
+\f2     		01234\
+		s =	Hello
+\f0 \
+\
+
+\f2 	string s = "Hello";\
+	for (int k = 0; k < s.size(); k++)\
+	\{\
+		cout << s[k] << endl;\
+	\}
+\f0 \
+\
+
+\f2 	string s = "Hello";	\cf2 // s is a string\cf0 \
+	char c = s[1];		\cf2 // s[1] is a character\cf0 \
+							\cf2 // characters: 'a' '$' '4' '\\n'\
+							// be careful: 4 != '4'
+\f0 \cf0 \
+	\
+\
+# ---------------------------------------- Functions ---------------------------------------- #			\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 When do we need a function?\cf0 		\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	int main()\
+	\{\
+		...\
+		...\
+		for (int k=0; k<3; k++)\
+			cout << "Hello";\
+		...\
+		...\
+		for (int k=0; k<3; k++)\
+			cout << "Hello";\
+		...\
+		...\
+		for (int k=0; k<3; k++)\
+			cout << "Hello";\
+		...\
+		...\
+	\}
+\f0 	\
+\
+	// \cf3 Terrible code. We need to design a function to do this.\cf0 \
+\
+You can teach your computer "how to sum" instead of "what to sum".\
+Generally, the syntax of a function goes as follows:\
+\
+
+\f2 	
+\f3\i\b return_type
+\f2\i0\b0  function_name(p1, p2, p3, ...)\
+	\{\
+		function_body\
+	\}
+\f0 \
+\
+
+\f2 	// for example:\
+	int sum(int begin, int end)\
+	\{\
+		int temp = 0;\
+		for (int i = begin; i <= end; i++)\
+		\{\
+			temp += i;\
+		\}\
+		return temp;\
+	\}
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf2 	// int indicates that the output is of type integer. we call this return type.\
+	// sum is the name, or the identifier.\
+	// 
+\f4\i \cf2 begin
+\f2\i0 \cf2  and 
+\f4\i \cf2 end
+\f2\i0 \cf2  are parameters to the function sum.\
+	// the function body \{\}
+\f0 \cf0 \
+\
+	\
+# ---------------------------------------- Code Style ---------------------------------------- #						\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	\cf2 // An unnatural way to organize code:\
+\cf0 	\
+	void greet()\
+	\{\
+		for (int k=0; k<3; k++)\
+			cout << "Hello" << endl;\
+	\}\
+\
+	int main()\
+	\{\
+		...\
+		greet();\
+		...\
+		greet();\
+		...\
+		greet();\
+		...\
+	\}\
+\
+\
+	\cf2 // A natural way to organize code:\
+\cf0 \
+	\cf4 void greet();\cf0 		\cf2 // this is called a function prototype\cf0 \
+\
+	int main()\
+	\{\
+		...\
+	\}\
+\
+	void greet()\
+	\{\
+		...\
+	\}
+\f0 \
+\
+\
+The function must be defined before it can be used. \
+\
+If the definition of greet comes after the main function, the compiler will complain that greet (function) as an undefined behavior. \\\
+\
+If for a style reason you want to put the main function on the top and define other functions later, you can "let the computer know" that there is going to be a function with a certain name. \
+\
+\
+\
+\
+	}

@@ -1,0 +1,480 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset0 Menlo-Bold;\f2\fmodern\fcharset0 Courier;
+\f3\fmodern\fcharset0 Courier-Bold;\f4\fnil\fcharset0 Menlo-Italic;}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue255;\red127\green127\blue127;\red0\green0\blue0;
+\red251\green2\blue255;\red251\green2\blue7;\red127\green0\blue128;\red251\green2\blue7;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c25279\c100000;\cssrgb\c57046\c57047\c57046;\cssrgb\c0\c0\c0;
+\cssrgb\c100000\c25279\c100000;\cssrgb\c100000\c14913\c0;\cssrgb\c57919\c12801\c57269;\cssrgb\c100000\c14913\c0;}
+\margl1440\margr1440\vieww28160\viewh19580\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Nov. 7 - W - Lec 12\
+\
+
+\f1\b C String, C++ String, and Pointers
+\f0\b0 \
+
+\f2 \
+		// How to loop through a string:\
+\
+	void makeUpperCase(string& s)\
+	\{\
+		for (int k = 0; k != s.size(); k++) // For a C++ string\
+			s[k] = toupper(s[k])\
+	\}\
+\
+	void makeUpperCase(char s[])\
+	\{\
+		for (int k = 0; \cf2 s[k] != '\\0'\cf0 ; k++)  // For a C string\
+			s[k] = toupper(s[k])\
+	\}
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ------------------------------ Array of C++ Strings ------------------------------ #													\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	
+\f2 string sa[8];		// Each element in the array is a string.\
+	\
+	sa[0]	cat\
+	sa[1]	mouse		// sa[1].size()\
+	sa[2]	eel\
+	sa[3]	ferret\
+	sa[4]	horse
+\f0 \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ------------------------------ Array of C Strings ------------------------------ #													\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 		char sa[5][7];	\
+		// An array of many arrays of characters.\
+		// Once the char array is declared, values cannot be assigned using the shortcut.\
+		// We have to do this:\
+\
+			strcpy(sa[0], "cat");\
+			strcpy(sa[1], "mouse");\
+			strcpy(sa[2], "eel");\
+			strcpy(sa[3], "ferret");\
+			strcpy(sa[4], "horse");
+\f0 \
+\
+	
+\f2 	// This 2 dimensional array is an array of c strings.\
+		0	1	2	3	4	5	6\
+		0	c	a	t	'\\0'\
+		1	m	o	u	s	e	'\\0'\
+		2	e	e	l	'\\0'\
+		3	f	e	r	r	e	t	'\\0'\
+		4	h	o	r	s	e	'\\0'\
+\
+\
+	char pets[5][MAX_WORD_LENGTH + 1] = \{		\cf3 // +1 means there is a zero byte\cf0 \
+		"cat", "mouse", "eel", "ferret", "horse"\
+	\}\
+\
+\
+	// Actually, C and C++ don't have 2 dimensional arrays.\
+	// It's just that each of the element in 1 dimensional array is a 1 dimensional array itself.\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 # ------------------------------ \cf2 Code Example\cf0  ------------------------------ #
+\f2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 ## ---------------------------------------------------------------- ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	// Spec: write a program to count how many elements in C string array have a particular length.\
+	// With \cf5 C string:\cf0 \
+\
+	const int MAX_WORD_LENGTH = 6;\
+	int countLength(const char a[][MAX_WORD_LENGTH + 1], int n, int targetLength);\
+\
+	int main() \
+	\{\
+		const int MAX_PETS = 5;\
+		char pets[MAX_PETS][MAX_WORD_LENGTH + 1] = \{\
+			"cat", "mouse", "eel", "ferret", "horse"\
+		\}\
+		cout << countLength(pets, MAX_PETS, 5);\
+			// cout how many 5-character strings?\
+	\}\
+\
+	int countLength(const char a[][MAX_WORD_LENGTH + 1], int n, int targetLength)\
+	\{\
+		int total = 0;\
+		for (int k = 0; k < n; k++)	// Check each row. n is the number of rows\
+		\{\
+			if (strlen(a[k]) == targetLength)\
+											// a[k] means a row (an array of characters)\
+			total++;\
+		\}\
+		return total;\
+	\}\
+\
+	// For a 2-dimensional array, \
+	// if you only give the number of one dimension (the first), it means the whole row.\
+	// Select row of the array by a[k]. However, we can't select a column.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 ## ---------------------------------------------------------------- ##\cf0 \
+\
+	// With \cf2 C++ string:\cf0 \
+\
+	int countLength(const string a[], int n, int targetLength);\
+\
+	int main() \
+	\{\
+		const int MAX_PETS = 5;\
+		string pets[MAX_PETS] = \{		// C++ string array: one-dimension array\
+		"cat", "mouse", "eel", "ferret", "horse"\
+		\}\
+		cout << countLength(pets, MAX_PETS, 5);\
+	\}\
+\
+	int countLength(const string a[], int n, int targetLength)											// const string a[] for C++\
+	\{\
+		int total = 0;\
+		for (int k = 0; k < n; k++)\
+		\{\
+			if (a[k].size() == targetLength)											// Function used here is s.size()...\
+			total++;\
+		\}\
+		return total;\
+	\}
+\f0 \
+\
+
+\f2 \cf4 ## ---------------------------------------------------------------- ##
+\f0 \cf0 \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ----------------------------------- \cf2 Memory Basic\cf0  ----------------------------------- #
+\f2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+Memory in a computer is a succession of memory cells, each 1 byte and with a unique address.\
+\
+Data that is larger than one byte (e.g. arrays) occupies consecutive cells.\
+\
+When the program declares a variable, the operating system sets aside a memory location with a unique address to store that variable. It associates that address with the variable\'92s name.\
+
+\f2 \
+		// Accessing variable by address:\
+		\
+		int myInt = 5;\
+		cout << &myInt;\
+
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ----------------------------------- Pointer, References ----------------------------------- #
+\f2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+	
+\f2 // Pointers hold memory addresses. Variables hold values.\
+\
+	// A pointer is the memory address of a variable.\
+\
+	// An address that is used to name a variable in this way 	// (by giving address in memory where the variable 
+\f3\b \cf6 starts
+\f2\b0 \cf0 ) is called a pointer \
+	// because the address can be thought of as "pointing" to the variable.\
+\
+	// A pointer can be stored in a variable. \
+	// However, even though a pointer is a memory address \
+	// and a memory address is a number, \
+	// you cannot store a pointer in a variable of type int or double. \
+\
+	// A variable to hold a pointer must be declared to have a pointer type. \
+	// For example:\
+\
+		double *p;		\
+	\
+	// declares p to be a pointer variable that can hold one pointer \
+	// that points to a variable of type double.\
+\
+		int *p1, *p2, v1, v2;\
+\
+	// Pointer variables like p1 and p2 can contain pointers to variables like v1 and v2. 	// You can use & to determine the address of a variable,\
+	// and you can then assign that address to a pointer variable.\
+\
+		\cf5 p1 = &v1;\cf0 \
+
+\f0 \
+	Practice problem:\
+	A. Pointer to char -> char* p;\
+	B. An array of 10 pointers to char -> char* arr[10];\
+	C. Pointer to const int -> const int* p;\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ----------------------------------- The * and & Operator ----------------------------------- #
+\f2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+
+\f2 	// The \cf5 "
+\f3\b addressof"
+\f2\b0 \cf0  operator & can be used to determine the address of a variable to be stored in the pointer.\
+\
+	// The * operator can be used to dereference a pointer and get the value stored in the variable that is being pointed to.\
+\
+	int main()\{\
+		int *p1, v1;\
+		v1 = 0;\
+		\cf6 p1 = &v1\cf0 ;		// The & operator is called the "addressof" operator\
+		*p1 = 42;\
+		cout << v1 << endl;\
+		cout << *p1 << endl;\
+	\}\
+
+\f0 	____________\
+	output:	42\
+				42\
+\
+	======\
+	Another example:\
+\
+
+\f2 	int a;\
+	int* ptr = &a;\
+	a = 6;\
+	cout << *ptr << endl;\
+
+\f0 \
+	_________\
+	output: 6\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ----------------------------------- p1 = p2 and *p1 = *p2 ----------------------------------- #
+\f2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+
+\f2 	// When you add the asterisk, you are not dealing with the pointers p1 and p2,\
+	// but with the variables to which the pointers are pointing.\
+\
+		*p1 = *p2\
+\
+	// Changes the variable store in p1 to that of p2.\
+\
+		p1 = p2;\
+	\
+	// Changes the value of p1 so that it is the memory address in p2, or simply pointing to the same thing as p2.\
+\
+
+\f0 \
+
+\f4\i 	smallburg says pointers is\
+	another way to implement passing by reference\
+	traverse arrays\
+	manipulate dynamic storage\
+	represent relationships in data structure
+\f0\i0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ------------------------- Compare Call-by-Pass Reference and by Value ------------------------- #
+\f2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+
+\f2 	void polarToCartesian(double rho, double theta, double\cf6 &\cf0  xx, double\cf6 &\cf0  yy);\
+\
+	int main()\
+	\{\
+		double r;\
+		double angle;\
+		...		\
+		double x;\
+		double y;\
+		polarToCartesian(r, angle, x, y);		\
+		double x2;\
+		polarToCartesian(2*r, angle, x2, y);\
+\
+	\}\
+\
+	void polarToCartesian(double rho, double theta, double\cf6 &\cf0  xx, double\cf6 &\cf0  yy)\{\
+		xx = rho * cos(theta);\
+		yy = rho * sin(theta);\
+	\}
+\f0 \
+
+\f2 			// if not passing by reference\
+	\
+		main()							polarToCartesian()\
+	---------------------------------------------------------\
+		r|5|									rho |5|\
+		angle |0|								theta |0|\
+		? 										xx		? 										yy\
+\
+\
+			// if passing by reference\
+\
+		main()							polarToCartesian()\
+	---------------------------------------------------------\
+		r|5|									rho |5|\
+		angle |0|								theta |0|\
+		save xx to x 							xx (is variable x)		save yy to y 							yy (is variable y)
+\f0 \
+\
+\
+--------------------------------------------------------------------------------------------\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # -------------------- Compare Call-by-Pass Reference and \cf7 Pointer Parameters\cf0  -------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 \
+	void polarToCartesian(double rho, double theta, double\cf6 *\cf0  xx, double\cf6 *\cf0  yy);\
+\
+	int main()\
+	\{\
+		double r;\
+		double angle;\
+		...		// Get values for r and angle.\
+		double x;\
+		double y;\
+		polarToCartesian(r, angle, \cf6 &\cf0 x, \cf6 &\cf0 y);\
+	\
+		double x2;\
+		polarToCartesian(2*r, angle, \cf6 &\cf0 x2, \cf6 &\cf0 y);\
+	\}\
+\
+	void polarToCartesian(double rho, double theta, double\cf6 *\cf0  xx, double\cf6 *\cf0  yy)\{\
+		\cf6 *\cf0 xx = rho * cos(theta);		\
+			\cf3 // put * before means that put the answer to the place xx point to\cf0 \
+		\cf6 *\cf0 yy = rho * sin(theta);\
+	\}\
+\
+\cf7 	// &x means "generate a pointer to x" "address of x"... (for pointer)\
+	// *p means "follow the pointer p to the object that p points to"\cf0 \
+\
+
+\f0 \
+\
+
+\f2 		main()							polarToCartesian()\
+	---------------------------------------------------------\
+		r|5|									rho |5|\
+		angle |0|								theta |0|\
+		*xx = x 								*xx ()									// save the value of xx to the place xx points which is x\
+		*yy = y 								*yy ()									// save the value of xx to the place yy points which is y\
+\
+\
+	// When we call the function, it copies the values of r and angle and find the address of x and y.\
+	// When the time to store xx and yy, the function stores their value to the place xx and yy point to, which are &x and &y.\
+\
+
+\f3\b \cf8 	// double& means reference to double or another-name-for-some-double (for referencing)\
+	// double* means pointer-to-some-double or the-address-of-some-double (for pointer)
+\f2\b0 \cf0 \
+\
+	// A double is not the same as a pointer to a double (for example xx).\
+	// A pointer to a double is an address of a double (for example xx).\
+	// We can put a double in a double variable (for example *xx), \
+	\cf6 // but we cannot put a double in the address of a double (xx).
+\f0 \cf0 \
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ----------------------------------- \cf2 Basic Pointer Manipulations\cf0  ----------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 									
+\f2 \
+	double a = 3.2;		// Correct. Assign value to double variable a.\
+	double b = 5.1;		// Correct. Assign value to double variable b.\
+	double* p = &a;		// Correct. Assign a pointer to a double to the location of a double.\
+	\
+	\cf6 double* q = 7.6;	\cf0 	// No!! \cf6 Wrong variable type!\cf0  7.6 is a double, but q is a pointer to a double.\
+\
+	double c = a;			// Correct. Set c to be a. Double and double.\
+	\
+	\cf6 double d = p;	\cf0 		// No!! \cf6 Wrong variable type!\cf0  d is a double, \
+							// but p is a pointer to a double. Only d is able to hold a double.\
+\
+	double d = *p;		// Correct. *p represents the double that p points to.\
+\
+	double& dd = d;		// Correct. dd is a reference. It is another name of d.\
+\
+	\cf6 p = b;\cf0 					// No!!! \cf6 p is a pointer to a double, which can't hold a double\cf0 .\
+\
+	p = &b;				// Correct. &b is the address of (or, a pointer to) a double. \
+							// p is a pointer to a double.\
+  	or	\
+		\
+	*p = b;				// Correct. *p means "the double that p points to".\
+							// We take the double that p points to and store b in it.\
+\
+	*p += 4;				// Correct. *p = *p + 4. this means add 4 to b. b now equals to 9.1.\
+\
+	int k = 7;\
+	p = &k;				// No!! &k is the address of (or, a pointer to) an 
+\f3\b integer
+\f2\b0 . \
+							// p can only hold a pointer to a 
+\f3\b double
+\f2\b0 .\
+\
+	int* z = &k;			// Correct.\
+\
+	cout << (k * b);		// Correct. 7 times 9.1 = 63.7.\
+	cout << (k * p);		// No!! Can't multiply an int and a pointer to a double.\
+	cout << (k * *p);	// Correct. We can multiply an int and a double (pointed by p)\
+ 	 \
+	or\
+	\
+	cout << (k**p);		// Correct but a confusing coding style.\
+							// The previous one looks better.\
+\
+	cout << (*z * *p);	// Correct. We can multiply a double pointed by z and a double pointed by p.\
+
+\f0 \
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ----------------------------------- Pointer as the Return Type ----------------------------------- #										\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	\cf2 int*\cf0  findOtherPointer(int* p);\
+		// The return type of this function is a pointer to int.
+\f0 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

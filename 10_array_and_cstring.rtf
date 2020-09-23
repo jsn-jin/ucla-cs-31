@@ -1,0 +1,497 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fmodern\fcharset0 Courier;\f2\fmodern\fcharset0 Courier-Bold;
+\f3\fmodern\fcharset0 Courier-BoldOblique;\f4\fmodern\fcharset0 Courier-Oblique;\f5\fnil\fcharset0 Menlo-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red127\green127\blue127;\red0\green0\blue255;\red251\green2\blue255;
+\red251\green2\blue255;\red251\green2\blue7;\red33\green255\blue6;\red127\green0\blue128;\red0\green0\blue0;
+\red251\green2\blue7;}
+{\*\expandedcolortbl;;\cssrgb\c57046\c57047\c57046;\cssrgb\c1680\c19835\c100000;\cssrgb\c100000\c25279\c100000;
+\cssrgb\c100000\c25279\c100000;\cssrgb\c100000\c14913\c0;\cssrgb\c0\c97680\c0;\cssrgb\c57919\c12801\c57269;\cssrgb\c0\c0\c0;
+\cssrgb\c100000\c14913\c0;}
+\margl1440\margr1440\vieww21700\viewh19160\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Oct. 31 - W - Lec 10\
+\
+Array (continued) + CString\
+\
+# -------------------------------------------------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2\b \cf0 	// nScores version 1.0
+\f1\b0 \
+	// What if we use an 
+\f3\i\b array
+\f1\i0\b0  to store values\
+\
+	#include <iostream>\
+	#include <string>\
+	#include <cmath>			\cf2 // For the sqrt function\cf0 \
+	using namespace std;\
+\
+	int main()\
+	\{\
+		int scores[1000];	\cf2 // This (i.e. 1000) could be problematic.\cf0  \
+								\cf2 // We should find a way to deal with it.\cf0 \
+		int nScores = 0;\
+		int total = 0;\
+			cout << "Enter the score: " << endl;\
+\
+		for(;;)\
+		\{\
+			int s;\
+			cin >> s;\
+			if (s<0)\
+				break;\
+			total += s;\
+			
+\f4\i \cf3 scores[nScores] = s
+\f1\i0 \cf0 ;\
+			nScores ++;\
+		\}\
+\
+		if (nScores == 0)\
+		\{\
+			cout << "There were no scores, so no average." << endl;\
+		\}\
+		else\
+		\{\
+			double mean = \cf4 static_cast<double>(total)\cf0 /nScores;\
+			double sumOfSquares = 0;\
+			cout << "the average of all scores is " << mean << endl;\
+			\
+			for (int k=0; k < nScores; k++)\
+			\{\
+				double diff = scores[k] - mean;\
+				sumOfSquares += diff * diff;\
+			\}\
+	\
+			cout << "The std.deviation is " << sqrt(sumOfSquares/nScores) << endl;\
+		\}\
+	\}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 \
+	// nScores [0,9999], it will never be less than zero, but what if it is too big?\
+	// We can set a counter, once the the number of score reaches that value, we stop and 	// calculate the mean of the first 10000 score.
+\f0 \cf0 \
+\
+\
+# -------------------------------------------------------------------------------- #\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2\b \cf0 	// nScores version 2.0
+\f1\b0 \
+	// This one can handle the situation if too many scores are entered
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf0 \
+	#include <iostream>\
+	#include <string>\
+	#include <cmath>	\
+	using namespace std;\
+\
+	int main()\
+	\{\
+\cf5 		const int MAX_NUMBER_OF_SCORES = 10000;\
+		int scores[MAX_NUMBER_OF_SCORES];\cf0 \
+		int nScores = 0;\
+		int total = 0;\
+		cout << "Enter the score: " << endl;\
+		for(;;)\
+		\{\
+			int s;\
+			cin >> s;\
+			if (s<0)\
+				break;\
+		\
+			\cf4 // Handle the situation of too many scores\cf0 \
+			if (nScores == MAX_NUMBER_OF_SCORES)				\cf2 // If more than 10000 scores are entered:\cf0 \
+			\{\
+				cout << "I can handle only " << MAX_NUMBER_OF_SCORES << " scores." << endl;\
+				cout << "continue with just the first " << MAX_NUMBER_OF_SCORES << " values." << endl;\
+				break;	// goes to the else part.\
+			\}\
+			\cf4 // If statement finishes\cf0 \
+\
+			total += s;\
+			scores[nScores] = s;	\cf2 // Fill the array\cf0 \
+			nScores ++;				\cf2 // Prepare for the next score to be added\cf0 \
+		\}\
+\
+\
+		if (nScores == 0)\
+		\{\
+			cout << "There were no scores, so no average." << endl;\
+		\}\
+		else\
+		\{\
+			cout.setf(ios::fixed);	// set the precision of mean\
+			cout.precision(3);\
+\
+			double mean = static_cast<double>(total)/nScores;\
+			cout << "the average of all scores is " << mean << endl;\
+\
+			double sumOfSquares = 0;\
+			for (int k=0; k < nScores; k++)\
+			\{\
+				double diff = scores[k] - mean;\
+				sumOfSquares += diff * diff;\
+			\}\
+			\
+			cout << "The std.deviation is " << sqrt(sumOfSquares/nScores) << endl;\
+\
+		\}\
+	\}\
+\
+	\cf4 // Make sure never access an element out of the range.
+\f0 \cf4 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+# --------------
+\f1  \cf6 [Important]\cf0  
+\f0 \cf4 Read and Write Array in a Function\cf0  -------------- #
+\f1 \
+\
+	// const array? \
+	// Will the function modify the array we passed in?\
+\
+	// const array -> function (const) ? - works\
+	// const array -> function ()? - won't compile\
+\
+	int main() \
+	\{\
+		const int MAX_NUMBER_OF_SCORES = 10000;\
+		int score[MAX_NUMBER_OF_SCORES];\
+		int nScores = 0;\
+	\
+		\cf2 ...	// Fill up the array (perhaps only partially)\cf0 \
+		\
+		double m = computeMean(scores, nScore);\
+		\cf2 ...\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2\b \cf0 		int stuff[100];	
+\f1\b0 \
+	\
+		\cf2 ... // Fill up all 100 elements of stuff\cf0 \
+	\
+		double m2 = computeMean(stuff, \cf6 200\cf0 );			\cf2 // \cf6 Wrong\cf2 , it only has 100 elements. undefined behavior...\cf0 \
+\
+
+\f2\b 		\cf4 const\cf0  int dayInMonths[12] = \{31, 28, 31, 30, ... , 31\};
+\f1\b0 			\cf2 // const - cannot be modified\cf0 \
+	\
+		double m3 = computeMean(dayInMonths, 12);\
+		\cf2 ...\cf0 \
+	\
+		\cf7 setFirst\cf0 (stuff, 100, 42);		\
+			\cf2 // \cf7 stuff is a array can be modified\cf0 \
+\
+		\cf6 setFirst\cf0 (dayInMonths, 12, 42);	\
+			// \cf6 Won't compile as dayInMonths is not allowed to be modified\cf0 . It is a const array.\
+	\}\
+\
+	double computeMean(\cf8 const int a[]\cf0 , int n)			\cf2 // passing the position of original array and will not change the array\cf0 \
+	\{\
+		if (n == 0)\
+			return 0;\
+\
+		int total = 0;\
+		for (int k =0; k < n ; k++)\
+			total += a[k];\
+\
+		\cf6 setFirst(a, n, 42);\cf0 			\
+			\cf6 // Not allow - can't hand over to a function that may modify a string.\cf0 \
+\
+		return static_cast<double>(total) / n;			\cf2 // If n is zero, we get undefined behavior\cf0 \
+	\}\
+\
+	void setFirst(\cf8 int a[]\cf0 , int n, int value)			\cf2 // Passing the position of original array and may change the array\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\{\
+		if (n >= 1)\
+		a[0] = value;\
+		\cf7 computeMean(a, n);\cf0  			\
+			\cf7 // OK. a 5-year-old child give something to a responsible adult.\cf0 	\}\
+\
+	// What will happen if we pass an array into a function.\
+	// We will not get a copy. It is expensive if you only need to use 3 elements but copy 1000.\
+	// In c and c++, you don't make copy, the parameter will 
+\f2\b indicate the position of the array
+\f1\b0 . 	// Everything told by the parameter is where the array starts.\
+	// In a function, you know nothing about how many elements in that array, \
+	// so we use another parameter (the second) to indicate the number of interesting elements.\
+\
+\
+	// Can we check if the second parameter is 
+\f2\b not bigger than the element of the array
+\f1\b0 ?\
+\
+		double m2 = computeMean(stuff, 200); // undefined behavior\
+\
+	// We have no way to check if n is too big.\
+	// We can only check it by comparing it with an const integer indicating the length of the array.\
+\
+\
+	// How can we check if the function 
+\f2\b will modify my array?
+\f1\b0       \
+	// Ask the compiler to do the checking for me by saying "const int a[]" \
+	// or "const char b[]" or "const string c[]".\
+                                 
+\f0                                                                                                                                                                                                                                                                                                                                                                                                          \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ---------------------------------------- C++ Strings ---------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf0 \
+	#include <string>\
+	using namespace std;\
+\
+	string t = "Ghost";\
+	string s;				\cf2 // Empty string, meaning that s = ""\cf0 \
+\
+\
+	for (int k = 0; k != t.size(); k++)\
+		cout << t[k] << endl;	\
+							\cf2 // Spell out string t\cf0 \
+\
+	cout << t;\
+	getline(cin,s)		\cf2 // This will wipe out the original value of s\cf0 \
+\
+\
+	s = t;					\cf2 // Set s to Ghost\cf0 \
+	s += "!!!";	\
+\
+	if (t < s)\
+	\cf2 ...	// All these are legal in c++\
+		// However, they may become problematic once we shift to c.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ------------------------- Comparison between C++ Strings ------------------------- ##
+\f1 \cf2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 	
+\f1 \
+	// How can we compare 2 strings to see which one is bigger?\
+	// >> A string comparison is done based on the lexicographical order.\
+	// Exceptions are that 
+\f4\i UPPERCASE
+\f1\i0  letter are always less than 
+\f4\i lowercase
+\f1\i0  letters.\
+	// Digits are less than alphabets.\
+\
+	// For example:\
+\
+			"
+\f2\b Z
+\f1\b0 ebra" < "
+\f2\b a
+\f1\b0 lphabet"\
+			"
+\f2\b z
+\f1\b0 ebra" > "
+\f2\b a
+\f1\b0 lphabet"\
+			"uni
+\f2\b f
+\f1\b0 orm" < "uni
+\f2\b v
+\f1\b0 ersity"\
+			"alpha" < "alpha
+\f2\b b
+\f1\b0 et"\
+			"
+\f2\b 1
+\f1\b0 0apples" < "
+\f2\b 7
+\f1\b0 apples"\
+\
+	string t = "Ghost";\
+	string s = "Ghost";\
+\
+	// They are equal as each char is equivalent, and they have the same length.\
+\
+	// What if 2 strings have distinct length or their char doesn't match?\
+	// For example:\
+\
+		"Ghostwriter"\
+   		    ^\
+		"Ghoul"\
+ 		    ^\
+	// Find the first miss match.\
+	// Compare s and u. \
+	// The relative order of the character determines the order of the string. \
+	// z is the biggest and a is the smallest.\
+	// The length is not important here. \
+	\cf4 // If one of them runs out first, the longer one will be larger.\cf0 \
+	// Case sensitive manner: A < a in ASCII.\
+
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf9 ## ---------------------------------------------------------------- ##
+\f0 \cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ---------------------------------------- C Strings ---------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+C++ has an older brother, whose name is C. In C, we do not have the data type string, and C has its own way of representing strings. \
+\
+C++ inherits this older way of representing strings from C, and these old strings are still widely being used. \
+	\
+For this reason, we are teaching you this old scheme, and we will call these strings "C strings."\
+\
+If a C++ strings or C++ library is passed to a function written in c. No! C strings have different conventions\
+\
+Recall that a string is a sequence of zero or more characters. \
+Also recall that an array is a sequence of variables of the type you define. \
+Combining the two ideas, we see that we can use an array of characters to represent a string. \
+C
+\f5\b  string is essentially an array of characters (\cf6 + the zero byte\cf0 )
+\f0\b0 .\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf0 \
+	char s[10] = ...			\
+	\
+		// This creates space for C string of 
+\f2\b maximum length 9
+\f1\b0 . \
+		// The last space will be left for the \cf5 null-terminator\cf0 .\
+\
+		// Declaration of a C string:\
+\
+	
+\f2\b char t[10] = \{'G', 'h', 'o', 's', 't', '\\0'\};
+\f1\b0 		// The same way as we declare an array, very tedious (the (1/3) way to initialize a cstring).\
+	\
+	
+\f2\b char t[10] = "Ghost";
+\f1\b0 			// A better representation (the (2/3) way).\
+	
+\f2\b char t[] = "Ghost";
+\f1\b0 				// Also works (the (3/3) way).\
+\
+	\cf10 cout << t; 						// This works only for CString (char array, not int array)\cf0 \
+\
+\cf2 	// So how do we determine the length of the array?		\
+	// Approach 1: every string will have first byte to represent the number of elements in an array.\
+	// Approach 2 (correct): use a marker value that means "the string ended"...\
+	// >> people chose to use null: '\\0'. \
+	// We call it the zero byte as it has ASCII numerical value 0.\
+	// We never look beyond the zero byte. we don't care the part after the zero byte.\
+\cf0 \
+	char s[10] = "HOWAREYOU";\
+	s[3] = '\\0';\
+	cout << s << endl;				// output: HOW\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+	
+\f1 	____________________\
+		 0	 1	 2	 3	 4	  5\
+		'G'	'h'	'o'	's'	't'	'\\0'\
+\
+	char t[10] = "Ghost"	\
+		// When we declare a c string in this way, there is no need to add the zero byte.\
+\
+	char s[100];		\
+		// \cf4 If don't initialize, it is garbage\cf0 . \
+		// We have to use strcpy function to assign value.\
+\
+	char s[100];\
+	strcpy(s, "a");\
+	cout << s << endl;	\cf2 // output: a\cf0 \
+\
+\
+		// If we want an empty string \cf3 we have to do \
+	\
+	char s[100] = "";\cf0 \
+\
+	 	 0	 1	2 3	 4 5 .... 99\
+		'\\0'\
+\
+	t[2] = 'a';\
+\
+
+\f0 	
+\f1 	____________________\
+		 0	 1	 2	 3	 4	  5\
+		'G'	'h'	'a'	's'	't'	'\\0'\
+\
+		// How many elements does t have? 5, zero byte doesn't count.\
+		// Find the first char that is zero byte. We can write a loop to do so.\
+\
+
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ## ------------------------------ \cf4 CStrings Library\cf0  ------------------------------ ##
+\f1 \cf9 											\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	#include <iostream>\
+	
+\f2\b #include <cstring>
+\f1\b0 \
+\
+	char t[10] = "Ghost";\
+	char s[100] = "";\
+\
+	t[2] = 'a';		\
+		// Once initialized, we can change the value of each char. \
+		// Now the C string t becomes "Gh
+\f2\b a
+\f1\b0 st".\
+\
+	cout << strlen(t);	// output: 5.		\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf6 		// Don't do this as it calls strlen(t) for many times:\
+	for (int k = 0; k != strlen(t); k++)\
+		cout << t[k] << endl;\cf0 \
+\
+\cf7 		// The usual convention is that:	\
+	for (int k = 0; t[k] != '\\0'; k++)\
+		cout << t[k] << endl;
+\f0 \cf0 \
+\
+--------------------------------------------------\
+	The getline function\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf0 \
+	char f[100];\
+	\cf3 cin.getline(f,100);	\cf0 \
+	\
+	// The function takes 2 arguments. \
+	// The second one is the number of character I want to store.\
+	// 0 - 99 characters will fit.\
+	// If enter 100 char, it will not fit as the 100th character must be zero byte.
+\f0 \
+\
+\
+--------------------------------------------------\
+	Assignment\
+
+\f1 \
+	s = t;			// Error! array can not be assigned!\
+					// In c, we need a loop assign each characters...\
+	\
+	char d[10] = "Ghost";\
+	char g[100];\
+	for (int k = 0; k != 10; k++)\
+		g[k] = d[k];\
+	cout << g;	// output: Ghost\
+}

@@ -1,0 +1,414 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fmodern\fcharset0 Courier;\f2\fnil\fcharset0 Menlo-Bold;
+\f3\fmodern\fcharset0 Courier-Bold;\f4\fnil\fcharset0 Menlo-BoldItalic;\f5\fmodern\fcharset0 Courier-BoldOblique;
+\f6\fmodern\fcharset0 Courier-Oblique;}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue255;\red127\green127\blue127;\red251\green2\blue7;
+\red0\green0\blue255;\red251\green2\blue7;\red127\green127\blue127;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c25279\c100000;\cssrgb\c57046\c57047\c57046;\cssrgb\c100000\c14913\c0;
+\cssrgb\c1680\c19835\c100000;\cssrgb\c100000\c14913\c0;\cssrgb\c57046\c57047\c57046;}
+\margl1440\margr1440\vieww22680\viewh19580\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Oct. 29 - M - Lec 9\
+\
+Array\
+\
+# -------------------------------------------------------------------------------- #\
+\
+
+\f1 	for (k=0; k<10; k++)\
+	\{\
+		...\
+		if(...)\
+			\cf2 continue\cf0 ;\
+	\}\
+\
+\
+	int k = 0;\
+	while (k>0)\
+	\{\
+		...\
+		if (...)\
+			\cf2 continue\cf0 ;\
+		...\
+		k++;\
+	\}
+\f0 \
+\
+
+\f1 \cf3 	// the presence of continue will make difference.\
+	// continue -> go back to conditions.
+\f0 \cf0 \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ---------------------------------------- Array ---------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+Now, we are going to introduce the feature of 
+\f2\b array
+\f0\b0 .\
+\
+Suppose you want to create 10 integer variables.\
+\
+
+\f1 	int x1, x2, x3, x4...\
+\
+		// This is too long but still doable.\
+		// What if you want to create 100 variables?\
+	\
+		// C++ provides a simple way of creating variables 
+\f3\b of the same type
+\f1\b0  in a single statement.\
+		// vector in R\
+		// np.array in Python\
+\
+		// This is how it works:\
+\
+\
+			\cf2 int a[100];\cf0 		// Declaration\
+\
+
+\f0 \
+
+\f1 		// Like a regular variable, an array must be declared before it is used. \
+		// A typical declaration for an array in C++ is:\
+\
+				type name [#elements];\
+\
+		// Where type is a valid type (such as int, float...), \
+		// name is a valid identifier, and the elements field \
+		// (which is always enclosed in square brackets []), \
+		// specifies the length of the array in terms of the number of elements.\
+\
+		// Therefore, the foo array, with 5 elements of type int, can be declared as:\
+\
+				int foo [5];\
+
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ## ------------------------------ Initialization ------------------------------ ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+
+\f1 	int a[5] = \{1,2,3,4,5\};\
+\
+	\cf3 	// If you declare the array like this, \
+		// the number of elements in an array can be inferred from the initialization.		// Thus you can also omit the size and do the following.\cf0 \
+\
+	int a[] = \{1,2,3,4,5\};\
+\
+\
+\
+	int a[10] = \{1,2,3\};	\
+\
+		\cf3 // This is legal, and the rest of the array will be set to 0.\
+\cf0 \
+\
+	string b[10] = \{"alpha", "beta", "theta"\};\
+\
+		\cf3 // The rest of the thing will be set to "".\cf0 \
+\
+\
+	char[10] = \{'g', 'g'\};	\
+\
+		\cf3 // The rest will be set as garbage(?).
+\f0 \cf0 \
+\
+\
+	
+\f1 const int a[NUM] = \{1,2,3\};\
+\
+\pard\tx720\tx1440\tx1655\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 		// To protect the contents of the array, \
+		// you should make the array constant within the scope of the function \
+		// by adding const before argument.
+\f0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ## ------------------------------ Why do we need an array? ------------------------------ ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 									 \
+
+\f1 	// Here is an example of if statement:\
+\
+	bool isValidDate(int v, int m, int d)\
+	\{\
+		if (m<1 || m>12 || d<1)\
+			return false;\
+		if (m==1 || m==3 || m==5 .... || m==12)\
+			return d <= 31;\
+		if (m==4 || m==6 || m==9 .... || m==11)\
+			return d <= 30;\
+		// At this point, m must be 2\
+			...deal with leap year, non-leap year\
+	\}
+\f0 \
+
+\f1 \
+	// If we use an array:\
+\
+	bool isValidDate(int v, int m, int d)\
+	\{\
+		daysInMonth[12] = \{\
+			31, 28, 31, 30, 31, 30, \
+			31, 31, 30, 31, 30, 31\
+		\};\
+\
+		if (m<1 || m>12 || d<1)\
+			return false;\
+		if (m != 2)\
+			return d <= daysInMonth[m-1];\
+\
+		// at this point, m must be 2\
+			...deal with leap year, non-leap year\
+	\}\
+\
+
+\f3\b \cf4 	// Undefined behavior if out of bound.\
+	// Probably still run with wrong number or crash.
+\f1\b0 \cf0 \
+\
+
+\f0 ## ------------------------------------------------------------ ##\
+
+\f1 	\
+		// Here is an example of switch statement\
+
+\f0 \
+
+\f1 	switch(m)\
+	\{\
+		case 1: \
+			cout << "January" << endl;\
+			break;\
+		case 2: \
+			cout << "February" << endl;\
+			break;\
+		...\
+	\}\
+	\
+		// Here is when we use an array, which is much easier\
+\
+	string monthName[12] = \{\
+		"January", "February"...\
+	\};\
+\
+	if (m>=1 && m>12)\
+		cout << monthName[m-1] << endl;\
+
+\f0 \
+## ------------------------------------------------------------ ##\
+\
+	
+\f1 // [k]: when compiler translates, they knows where the array start \
+	// and the memory stored in different locations.\
+\
+	// If k is out of bound, we don't know what is stored at location k. \
+	// This could be a problem, causing program to crash.
+\f0 \
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ---------------------------------------- Two Arrays ---------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 											
+\f1 \
+	const int NMONTHS = 12;\
+	const int daysInMonth[12] = \{\
+			31, 28, 31, 30, 31, 30, \
+			31, 31, 30, 31, 30, 31\
+		\};\
+\
+	const string monthName[NMONTHS] = \{\
+		"January", "February"...\
+	\};\
+\
+\cf3 		// The way we initialize them:\
+		// Positions of months are correspond to the position of days.\cf0 \
+\
+	cout << "These months have 31 days: " << endl;\
+	for (int k = 0; k < NMONTHS; k++)\{\
+		if (dayInMonth[k] == 31)\
+			cout << monthName[k] << endl;\
+	\}\
+\
+
+\f0 \
+## ------------------------------------------------------------ ##\
+\
+	\cf2 C++ rule: when declare an array, \
+		number of elements in an array must be a 
+\f4\i\b \cf2 constant
+\f0\i0\b0 \cf2  \
+		and 
+\f4\i\b \cf2 should be known at the compile time
+\f0\i0\b0 \cf2 .\cf0 \
+
+\f1 \
+	\cf5 // You can do this:\cf0 \
+\
+	const int N_MONTHS = 12;\
+	double a[N_MONTHS];\
+\
+	double b[48];\
+	double c[4*N_MONTHS];\
+\
+	\cf6 // Don't do this:\cf0 \
+\
+	int n;\
+	cin >> n;\
+	double d[n];	\
+\
+	int m = 10;\
+	double e[m]:	\
+\
+\
+	...daysInMonth.size()...	// no...	size() is a member function of string class\
+	...daysInMonth.length...	// no...\
+
+\f0 \
+\
+--------------------------------------------------------------------------------------\
+	\
+	
+\f1 \cf2 // An example\
+\cf0 		// You don't always need an array...
+\f0 \
+\
+
+\f1 	int nScore = 0;\
+	int total = 0;\
+	cout << "Enter the score: " << endl;\
+	loop...\
+	\{\
+		int s;\
+		cin >> s;\
+		if (s < 0)\
+			break;\
+		total += s;\
+		nScore ++;\
+	\}\
+\
+\cf3 	// When out of this loop, I have 2 numbers: \
+	// one is the total score, and the other is the number of scores.\
+\cf0 \
+	cout << "The average of all scores is " << total/nScore << endl;\
+\
+	if (nScore == 0)\
+		cout << "There were no scores, so no average." << endl;\
+\
+\cf7 		// If the very first number I entered is negative, nScore will be zero, \
+		// and there will be an undefined behavior as we divided total by zero.\cf0 \
+\
+	\cf3 	// Now this is an integer divided by another integer.\
+		// Just for the purpose of this division, I want double.\cf0 \
+\
+		\cf3 // A better way would be:\cf0 \
+	cout << "The average of all scores is " << \cf2 static_cast<double>(total)\cf0 /nScores << endl;\
+\
+
+\f0 \
+---------------------------------------------\
+
+\f1 	// Below is the code of the program above\
+\
+	int main()\{\
+		int nScores = 0;\
+		int total = 0;\
+		cout << "Enter the score: " << endl;\
+	\
+		for(;;)\{\
+			int s;\
+			cin >> s;\
+			if (s<0)\
+				break;\
+			total += s;\
+			nScores ++;\
+		\}\
+		if (nScores == 0)\
+			cout << "There were no scores, so no average." << endl;\
+		else\
+			cout << "the average of all scores is " << static_cast<double>(total)/nScores << endl;\
+	\}\
+
+\f0 ---------------------------------------------
+\f1 \
+
+\f0 \
+--------------------------------------------------------------------------------------\
+	\
+	
+\f1 // What if we use an 
+\f5\i\b array
+\f1\i0\b0  to store values\
+\
+	#include <iostream>\
+	#include <string>\
+	#include <cmath>			\cf3 // for the sqrt function\cf0 \
+	using namespace std;\
+\
+	int main()\
+	\{\
+		int scores[1000];	\cf3 // this (i.e. 1000) could be problematic.\cf0  \
+								\cf3 // we should find a way to deal with it.\cf0 \
+		int nScores = 0;\
+		int total = 0;\
+		cout << "Enter the score: " << endl;\
+\
+		for(;;)\{\
+			int s;\
+			cin >> s;\
+			if (s<0)\
+				break;\
+			total += s;\
+			
+\f6\i \cf5 scores[nScores] = s
+\f1\i0 \cf0 ;\
+			nScores ++;\
+		\}\
+\
+		if (nScores == 0)\{\
+			cout << "There were no scores, so no average." << endl;\
+		\}\
+		else \{\
+			double mean = \cf2 static_cast<double>(total)\cf0 /nScores;\
+			double sumOfSquares = 0;\
+			cout << "the average of all scores is " << mean << endl;\
+			\
+			for (int k=0; k < nScores; k++)\{\
+				double diff = scores[k] - mean;\
+				sumOfSquares += diff * diff;\
+			\}\
+	\
+			cout << "The std.deviation is " << sqrt(sumOfSquares/(nScores-1)) << endl;\
+		\}\
+	\}\
+
+\f0 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

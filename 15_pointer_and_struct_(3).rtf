@@ -1,0 +1,453 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fmodern\fcharset0 Courier;\f2\fmodern\fcharset0 Courier-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue7;\red251\green2\blue255;\red127\green0\blue128;
+\red0\green0\blue255;\red127\green127\blue127;\red153\green102\blue51;\red251\green2\blue255;\red251\green2\blue7;
+\red11\green90\blue124;\red0\green0\blue0;\red33\green255\blue6;\red253\green128\blue8;\red127\green127\blue127;
+}
+{\*\expandedcolortbl;;\cssrgb\c100000\c14913\c0;\cssrgb\c100000\c25279\c100000;\cssrgb\c57919\c12801\c57269;
+\cssrgb\c1680\c19835\c100000;\cssrgb\c57046\c57047\c57046;\cssrgb\c66800\c47512\c25860;\cssrgb\c100000\c25279\c100000;\cssrgb\c100000\c14913\c0;
+\cssrgb\c0\c42931\c55996;\cssrgb\c0\c0\c0;\cssrgb\c0\c97680\c0;\cssrgb\c100000\c57637\c0;\cssrgb\c57046\c57047\c57046;
+}
+\margl1440\margr1440\vieww21460\viewh19280\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Nov. 21 - W - Lec 15\
+\
+	Pointer to Structures\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ----------------------------------- Handout ----------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf0 \
+		// A pointer to structure can be defined the as way as before:\
+	\
+	Employee *p;\
+\
+		// You can refer to a member of the structure pointer by p first dereferencing it \
+		// and then using the dot operator.\
+\
+	(*p).name\
+\
+		// But here is something new: \
+		// the above expression is equivalent to the following short cut;\
+\
+	\cf2 p->name\cf0 \
+\
+		// This works \cf3 only\cf0  if p is a \cf3 pointer\cf0 .\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## -------------------------------- Review Lec 14 -------------------------------- ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+
+\f1 	Caller's object should 
+\f2\b not change
+\f1\b0 :\
+		\cf3 void f(Blah b)	\cf0 		\
+		Pass by \cf4 values\cf0  		--------> Best if objects are cheap to copy \
+											(What is cheap to copy? Built-in types: int, double...)\
+\
+		\cf3 void f(
+\f2\b \cf3 const
+\f1\b0 \cf3  Blah b)\cf0 	\
+		Pass by \cf4 constant reference\cf2   \cf0  --------> Best if objects are not cheap to copy \
+\
+\
+	Caller's object 
+\f2\b should change
+\f1\b0 \
+		\cf3 void f(Blah b)\cf0 			\
+		Pass by (non-constant) \cf4 reference\cf0 \
+\
+	// There is another we can pass something to function (pointer). (See below)\
+
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ## ---------------------------------------------------------------------- ##\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	
+\f1 // There is another way we can pass something to function (pointer)\
+\
+	void printPayCheck(const \cf5 Employee& e\cf0 );\
+		// My employee object will not be changed.\
+\
+	void celebrateBirthday(\cf3 Employee* ep\cf0 );\
+		// My employee object should be changed\
+		// So that we should not pass by a constant reference.\
+\
+	double totalPayroll(\cf2 const Employee emps[]\cf0 , int n); \
+		// My employee object will not be changed.\
+\
+	struct Employee	// struct type name: Employee.\
+	\{\
+		string name;\
+		double salary;\
+		int age;\
+	\};	\cf6 // <\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97 don't forget this semi-colon.\cf0 \
+\
+	int main()\
+	\{\
+		Employee company[100];\
+		int nEmployees = 0;\
+		// ... read in some information, fill some of the array, set nEmployees.\
+	\
+		printPayCheck(company[0]);\
+		celebrateBirthday(
+\f2\b \cf4 &company[2]
+\f1\b0 \cf0 );				// The argument is now a pointer to an Employee.\
+\
+		cout << totalPayroll(company, nEmployees);\
+	\
+		for (\cf7 Employee* ep = company; ep < company+nEmployees; ep++\cf0 )\
+			cout << \cf3 ep->name\cf0  << endl;\
+	\}\
+\
+	double totalPayroll(\cf4 const Employee emps[]\cf0 , int n)		\cf8 // Employee is the type name, and emps is the name of the array.\cf0 \
+	\{\
+		double total = 0;\
+		for (int k = 0; k < n; k++)\
+			total += \cf4 emps[k].salary\cf0 ;\
+		return total;\
+	\}\
+\
+	void printPayCheck(const employee& e)		\cf8 // if passing by value, expensive to copy the whole object, so use reference.\cf0 \
+	\{\
+		cout << \'93Pay to the order of \'93 << e.name << \'93the amount $\'94 << e.salary/12 << endl;\
+	\}\
+\
+	void celebrateBirthday(\cf2 Employee* ep\cf0 )	\cf8 // if we pass by value, Lucy\'92s age will not change.\cf0 \
+	\{\
+		\cf9 ep.age++;		// Wrong. ep is a pointer, not an object of some struct type. \cf0               \
+		\cf2 *ep.age++;\cf10  	\cf2 // Wrong. This won\'92t compile. '.' has higher precedence than *.\cf11 \
+		(*ep).age++;	// This works, but ugly.\
+		\cf12 ep->age++;	// Correct.\cf0 \
+	\}\
+
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ## ---------------------------------------------------------------------- ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+	
+\f1 // code\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 	\cf11 #include <iostream>\
+	#include <string>\
+	using namespace std;\
+\
+	struct Employee		\
+	\{\
+		string name;\
+		double salary;\
+		int age;\
+	\};\
+\cf3 \
+	\cf11 void printPayCheck(\cf3 const Employee& e\cf11 );\
+	void celebrateBirthday(\cf5 Employee* ep\cf11 );\
+	double totalPayroll(\cf3 const Employee emps[], int n\cf11 );	\
+\cf3 \
+	\cf11 int main()\
+	\{\
+		Employee company[100];\
+		int nEmployees = 0;\
+	\
+		company[0].name = "Jeff";\
+		company[0].salary = 600;\
+		company[0].age = 40;\
+		nEmployees++;\
+\
+		company[1].name = "Nick";\
+		company[1].salary = 8000;\
+		company[1].age = 33;\
+		nEmployees++;\
+\
+		company[2].name = "Chris";\
+		company[2].salary = 100;\
+		company[2].age = 13;\
+		nEmployees++;\
+	\
+		printPayCheck(company[0]);\
+		celebrateBirthday(\cf5 &company[2]\cf11 );	\
+\
+		cout << totalPayroll(company, nEmployees);\
+	\
+		for (Employee * ep = company; ep < company + nEmployees; ep++)\
+			cout << ep->name << endl;\
+	\}\
+\cf3 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf11 	double totalPayroll(const Employee emps[], int n)	\{\
+		double total = 0;\
+		for (int k = 0; k < n; k++)\
+			total += emps[k].salary;\
+		return total;\
+	\}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf11 	void printPayCheck(\cf3 const Employee& e\cf11 )\
+	\{\
+		cout << "Pay to the order of " << e.name << " the amount $" << e.salary/12 << endl;\
+	\}\
+\
+	void celebrateBirthday(\cf5 Employee* ep\cf11 )\
+	\{\
+		\cf5 ep->age++;\cf11 \
+	\}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ### ------------------------------------------------------------ ###\cf3 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 	We could also do this:\
+	\
+		
+\f1 \cf3 void celebrateBirthday(Employee& ep)
+\f0 \cf3 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ### ------------------------------------------------------------ ###\cf3 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf13 			An object\cf0  of				The name of\
+			some struct		.		a member of\
+				type					that type\
+\
+
+\f2\b \cf13 			A pointer to\
+			an object
+\f1\b0  \cf0 of				The name of\
+			some struct		->		a member of\
+			that. type				that type
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf0 \
+		// By definition, this means take the pointer\
+		// and follow the pointer to the object, select the member of that structure type.\
+\
+\
+	p->m  =  (*p).m	\
+		// m can be a data member or a member function\
+\
+\
+
+\f0 \
+\
+-------------------------------------------------------------------------------------------------\
+	\
+								\cf3 we may need to better manage our data member\cf0 \
+\
+
+\f1 	// people found that a lot of mistakes would be made\
+	// as they had to remember all the details about how something is implemented.\
+\
+	// abstraction.\
+	// 2+3 = 3+2... 4+22 = 22+4... 88+33 = 33+88...\
+	// use x and y to remember any number.\
+	\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 # ----------------------------------- Target: A Game ----------------------------------- #	
+\f1 					\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\cf8 // Now we will introduce the concepts of member function.
+\f0 \cf0 \
+
+\f1 \
+	// Spec:\
+	// In a video game, there are something moving around. Let\'92s call them targets.\
+	// They move around just in one dimension, and they each occupy one integer position.\
+	// Each of them can move left and right in unit of one step \
+	// (e.g. from 1 to 2, 2 to 3, and 3 to 2)\
+\
+\
+	// The program can create a target and move the target.\
+	// The game has a replay (keep the history of a target's movements)\
+\
+	// So we may need 2 data members:\
+		1: where it is now\
+		2: his history movement\
+\
+
+\f0 \
+
+\f1 	struct Target\
+	\{	\
+		int pos;\
+		string history;	\cf14 // int history[\'85]; the problem is that we don't know the size\'85\
+							// Another way to represent history, an array of characters\'85\
+	\
+		// Invariant property of the type:\
+			//	1. history consists only of Rs and Ls (uppercase only).\
+			//	2. pos == #of Rs in the string minus \
+							#of Ls in the string\cf0 \
+	\}\cf3 ;
+\f0 \cf0 \
+\
+
+\f1 	int main()\
+	\{\
+		Target t;\
+		t.pos = 0;\
+		t.history = "";\
+	\
+		\cf8 t.pos++;\cf0 			\
+				// The programmers have to check if they did the right thing all the time.\
+		\cf8 t.history += 'R';	\cf0 \
+				// Very easily to forget this one.\
+				// C++ actually provides a better way to avoid these problems.\
+				// What we would like would be some mechanism that can eliminate these situations \
+				// i.e. illegal pos and typo in history.\
+\
+	\cf2 	t.pos = -42;		\
+				// We are not supposed do this but we are allowed to do so by the program now.\
+	\cf11 \}\cf2 \
+
+\f0 \cf0 \
+---------------------------------------------------------\
+\
+	
+\f1 	The 
+\f2\b \cf13 name of
+\f1\b0 \cf0 			   	The name of		some \cf13 struct\cf0 	  \cf2 ::\cf0 		the member function\
+  		type				   		of that type\
+
+\f0 \
+---------------------------------------------------------\
+
+\f1 \
+	struct Target\
+	\{	\
+	\cf5 	void init();\
+		bool move(char dir);	\
+		void replayHistory();	\
+			\cf14 \
+			// The member functions are also called: operations / methods\
+	\cf0 \
+		int pos;\
+		string history;\
+			\
+			\cf14 // Data members are also called: attributes / field / instant variables\cf0 \
+	\}\cf3 ;\cf2 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2\b \cf3 	// We have to specify which function is allowed to deal with data members and which can not.\
+	// An argument (a pointer points to the object which calls the function) \
+	// will be passed into the function automatically.
+\f1\b0 \cf0 \
+\
+	int main()\
+	\{\
+		Target t;\
+			// t.pos = 0;\
+			// t.history = "";\
+		\cf3 t.init();\cf0 \
+		t.move('R');\
+		for (int i=0; i!=4; i++)\
+			t.move('L');\
+		t.replayHistory();\
+	\
+		Target t2;\
+		t2.init();\
+		// ...\
+		t2.move('L');\
+\
+		char ch;\
+		... read a character into ch ...\
+	\
+		if ( !t2.move(ch) )\
+			... problem ...;\
+	\}\
+\
+	void Target\cf3 ::\cf0 init()			\
+	\{						\
+		\cf3 this->\cf0 pos = 0;			// This is a pointer points to the object calls this function.\
+		\cf3 this->\cf0 history = "";\
+	\}\
+\
+	// There may be a hundreds of init function. \
+	// So we have to declare it is the init function of Target.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+\
+---------------------------------------------------------\
+
+\f1 C++ convention:\
+if there is no ambiguity, we can also say\
+\
+	\cf14 this->\cf0 pos = 0;\
+	\cf14 this->\cf0 history = "";\
+
+\f0 \
+---------------------------------------------------------\
+\
+	
+\f1 \cf2 void move(char dir)\cf0  	\
+	\
+	\cf2 // No! if we do this, this will become an ordinary function.\cf0 \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 	\cf3 // If you call it with a target in proper state, \
+	// The target will be kept proper after the implement of the function.\cf0 \
+
+\f2\b \
+	bool
+\f1\b0  Target\cf8 ::\cf0 move(char dir)	\
+	\{					\
+		switch(dir)\
+		\{\
+			case 'R':\
+			case 'r':\
+	\cf14 			// How do I talk about that pointer?\
+				// Use the \'91this\'92: a pointer to the object that the function is called on.\cf0 \
+				this->pos++;\
+				break;\
+			case 'L':\
+			case 'l':\
+				this->pos--;\
+				break;\
+		\cf14 // What if they pass in a letter other than l and r?\
+		// The function should do the job. if it cannot move, return a value to tell people.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 			default:\
+				return false;\
+		\}\
+		this->history += toupper(dir);	\
+		\cf14 // If we don't have the default: a question mark will be append to the history string.\
+\cf0 		return true;\
+	\}\
+\
+	
+\f2\b void
+\f1\b0  Target
+\f2\b \cf8 ::
+\f1\b0 \cf0 replayHistory()\
+	\{\
+		for (int k=0; k!=this->history.size(); k++)\
+		\{\
+			cout << this->history[k] << endl;\
+		\}\
+	\}\
+\
+---------------------------------------\
+\
+	double x = 3.7;\
+	sqrt(x+7); 				// Stupid.\
+	double y = sqrt(x+7);	// Ok.\
+\
+---------------------------------------\
+}

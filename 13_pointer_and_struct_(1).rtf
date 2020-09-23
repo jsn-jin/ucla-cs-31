@@ -1,0 +1,666 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fmodern\fcharset0 Courier;\f2\fmodern\fcharset0 Courier-Bold;
+\f3\fnil\fcharset134 PingFangSC-Regular;}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue255;\red127\green127\blue127;\red251\green2\blue7;
+\red0\green0\blue0;\red127\green0\blue128;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c25279\c100000;\cssrgb\c57046\c57047\c57046;\cssrgb\c100000\c14913\c0;
+\cssrgb\c0\c0\c0;\cssrgb\c57919\c12801\c57269;}
+\margl1440\margr1440\vieww23260\viewh19280\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Nov. 14 - W - Lec 13\
+\
+	Pointer and Its Connection with Arrays + Introduction to Structure\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ------------------------------ Handout (\cf2 Pointer Arithmetic\cf0 ) ------------------------------ #												\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	
+\f1 // You can only access local variables that are defined in the current function \
+	// and the arguments that passed in by reference.\
+\
+	// However, if you know the location of some variables within the memory, \
+	// a lot of times you can directly access that memory and manipulate that value in it.\
+\
+	// Pointers help keep track of these locations. \
+	// They are nothing but variables for \'93addresses\'94. \
+	// We can create a pointer as follows:\
+\
+	double *p;	\cf3 // Create a pointer, which can store the address of a double variable.\cf0 \
+	p = &x;		\cf3 // Assign address\cf0 \
+	*p = 5.0;		\cf3 // to refer to the actual variable located at that address.\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 	// The asterisk before p is called dereference marker, \
+	// and you are said to dereference a pointer to get the variable pointed by the pointer. \cf0 \
+\
+\
+	int arr[100];\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx13190\pardirnatural\partightenfactor0
+\cf0 	// This creates an array of 100 integers. \
+	// arr is actually the address the first element of the array.\
+	// More precisely, in your memory, the elements in the array are created side by side, \
+	// which means if you know where it begins, then you know where all the elements are located.\
+\
+	cout << arr;\
+	cout << &arr[1];\
+	cout << &arr[2];\
+\
+	// and saw something like the following \
+	\
+	0012FD80\
+	0012FD84\
+\pard\pardeftab720\partightenfactor0
+\cf0 	0012FD88\
+\
+	// This might be a little confusing, but if you do the following:\
+	\
+	cout << arr+1 << endl;\
+	cout << arr+2 << endl;\
+\
+	// You will see:\
+\
+	0012FD84\
+	0012FD88\
+\
+	// So I \'93added\'94 1 to the pointer and got the location of the arr[1], \
+	// instead of adding 1 to the address. \
+	// This is called the pointer arithmetic. \
+	// Because the computer knows that arr is pointing to the \'93integer,\'94 it automatically adds\
+	// 4 bytes instead of 1 to the address to grab the next element for you. \
+	// Because arr+1 evaluates to an address, it is a pointer as well.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx13190\pardirnatural\partightenfactor0
+\cf0 	
+\f2\b *(arr+1) is equivalent to arr[1];\
+	arr+1 is equivalent to &arr[1];
+\f1\b0 \
+\
+\
+\
+	// The following 2 statements are the same:\
+\pard\pardeftab720\partightenfactor0
+\cf0 	\
+	int findFirst(\cf4 const string a[]\cf0 , int n, string target)\
+	int findFirst(\cf4 const string *a\cf0 , int n, string target)
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ---------------------------------------- Lecture ---------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	
+\f1 double a, b = 9.1;\
+	double* p = &b;\
+\
+	double* q;	\
+	\cf4 *q = 4.7;		// Undefined. q is not pointing anything. you should initialize it first.\
+\
+					// If q is a pointer to a double, then *q is a double.\
+					// However, q is not initialized (meaning q is not pointing to anywhere), \
+					// this is undefined behavior.\
+\cf0 \
+					// q is usually out of the range of available memory address (bad address). \
+					// The program will crash.\
+					// What if q is in the range of available memory address? \
+					// It may point to some place you don't use in your program.\
+					// What if q is pointing to some other information? \
+					// (the middle of an array, a control information...)\
+\
+\
+	q = p;				// q also points to b now.\
+	double* r = &a;	// Declare a pointer r which points to double a.\
+\
+	*r = b;			// a is now 9.1.\
+\
+	if (p == r)		// False (they are not equal). \
+						// Comparing two pointers: it depends how memories put a and b.\
+\
+\
+	if (p == q)		// True. q = &b = p. Both pointing to b (they store the same address, b's address).\
+\
+	if (*p == *r)		// Comparing two doubles.\
+\
+		// Equal and not equal: okay.\
+		// Other comparisons: not yet.\
+\
+	*q = 17;			// Wipe out original values. now *p = b will also be 17.\
+
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # -------------------------------------------------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f1 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	const int MAXSIZE = 5;		// Declare and initialize a constant integer: the size of array.\
+	double da[MAXSIZE];			// Declare an array.\
+	int k;							// Declare a integer.\
+	double* dp;					// Declare a pointer.\
+\
+	da	[0]	[1]	[2]	[3]	[4]\
+\
+	// How can we visit each value in this array?\
+\
+	for (k = 0; k < MAXSIZE; k++)\
+		\cf4 da[k] = 3.6\cf0 ;\
+\
+	// There are three different ways to describe pointers.\
+	// Different people click with their best ways.\
+\
+\
+	// THE FIRST WAY - arrow interpretation (the the place where the arrow points to).\
+\
+	// THE SECOND WAY - machine language interpretation (find the address to store 3.6).\
+\
+	// ***THE THIRD WAY*** - algebra interpretation (*&x ====> x)\
+	// dp = &da[0]\
+\
+	// Where to put 3.6? *dp = 3.6.\
+	// The position of dp = &da[0].\
+	// *(&da[0]) = 3.6,\
+	// which is actually:\
+	// da[0] = 3.6;\
+	// If we don't want to use the bracket, is should be *dp = 3.6.\
+\
+\
+	// We can use pointers to visit each element in an array.\
+	// If we point to an element of a double array, that pointer will be a pointer to a double.\
+\
+\
+	for (\cf4 dp = &da[0]\cf0 ; ?; ?)\
+		*dp = 3.6;\
+	\
+	// Now we want to point dp to the next element of the array.\
+	// The syntax will be dp++.\
+\
+	for (\cf2 dp = &da[0]; dp < &da[MAXSIZE]; dp++\cf0 ) // dp = dp + 1; can we do this? Yes!\
+		*dp = 3.6;\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 # ---------------------------------------- Pointer Arithmetic ---------------------------------------- #
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+	&a[i] + j				// is the same as\
+	&a[i + j]\
+\
+	dp = &da[0];\
+	\cf2 dp = dp + 1;			// is the same as\cf0 \
+	\cf2 dp = &da[0 + 1];\cf0 \
+	dp = &da[1];			// Now dp points to the second element of the array.\
+\
+	// Also defined for minus.\
+	\
+	&a[i] - j				// is the same as\
+	&a[i - j]\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ---------------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ---------------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	// Machine language people sometimes messed up here.\
+\
+	100	feet\
+  	1 	yard\
+	--------\
+	103 feet 	\cf2 // We have to pay attention to the units.\cf0 \
+\
+	1000---1000 byte\
+	1001---1008 byte (as double has 8 bytes)\
+\
+	// Be careful, we don't do\
+	\
+	dp += 8...\
+	\
+	// since the compiler has already *8 for us.\
+	// The only thing we need to do is to tell the compiler: "next"\
+	\
+	dp++;\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ---------------------------------------------------------------------- ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ## ---------------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	&a[i] < &a[j]		// Can I do something like this? Yes!!\
+						// Also for <=, >=, >, ==, !=\
+						// which is the same as\
+	i < j\
+\
+	// Can I generate a pointer to a non-existing element just pass the end of the array. Yes!\
+	// 
+\f2\b The sixth pointer is legal
+\f1\b0 .\
+	// \cf4 But it's undefined behavior to follow the pointer.\
+\
+\cf0 	for (\cf2 dp = &da[0]; dp < &da[MAXSIZE]; dp++\cf0 )\
+		*dp = 3.6;\
+\
+	// It's safe as when i = 5, we automatically get out of the loop.\
+	// \cf4 Can I compare elements from 2 different array? No!\
+\cf0 \
+	&a[i] - &a[j]		<===>  i - j;		\
+\
+	// This is legal. How far is it from pointer j to pointer i?\
+	// Suppose i = 3, j = 1\
+\
+		1000 - 1008 - 1016 - 1024...\
+  		|				|\
+		&a[j]			&a[i]\
+\
+		1016\
+		1000\
+		----\
+  		  16 bytes	\
+\
+	// However, the compiler will divide the answer by 8 since a[k] is a double.\
+	// So the answer will be 2.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ---------------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	p  			<===> 		&p[0]\
+	*(p + i)	<===>		p[i]\
+\
+	for (
+\f2\b \cf2 dp = da
+\f1\b0 \cf2 ; dp < &da[MAXSIZE]; dp++\cf0 )\
+		*dp = 3.6;\
+\
+	&da[5];		// Another way to write it:\
+	&da[0 + 5];	// Another way to write it:\
+	&da[0] + 5;	// Another way to write it:\
+	da + 5;		// Life is much easier!!!\
+\
+	int lookup(const string 
+\f2\b a[]
+\f1\b0 , int n, int target)\
+	\{\
+    
+\f2\b .... a[k] ....
+\f1\b0 \
+	\}\
+\
+	int main()\
+	\{\
+		string sa[5] = \{"cat", "mouse", "eel", "ferret", "horse"\};						\cf4 // what passed into a function the place where the array start... A POINTER!!\cf0 \
+		int i = lookup(
+\f2\b sa
+\f1\b0 , 5, "eel");\
+    	int i = lookup(
+\f2\b &sa[0]
+\f1\b0 , 5, "eel");	 // the same.\
+    	int m = lookup(
+\f2\b sa + 1
+\f1\b0 , 3, "ferret");\
+	\}\
+\
+	// sa is the address to where it starts...\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ---------------------------------------------------------------------- ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	 
+\f1 \
+				 \cf2 const string a[]\cf0 	\cf2 // They are equivalent.\cf0 \
+	int lookup(\cf2 const string* a\cf0 , int n, int target)\
+	\{\
+    	.... a[k] ....\
+	\}\
+\
+	// a[k] = "eel".\
+	// a is a pointer to where the array start.\
+	// a[k] = *(a + k) ===> k+1 th element.\
+\
+	// The syntax can be array syntax to suggest the reader that it is an array.\
+	// Others may use pointer syntax because that is what really happens.\
+\
+	// By using dp, we can avoid doing the multiplication (8 every iteration), \
+	// Which is more efficient in old time.\
+
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ## ---------------------------------------------------------------------- ##\
+## ---------------------------------------------------------------------- ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 	double*\cf0  findFirstNegative(double *a, int n)\
+	\{\
+		for (\cf4 double* p=a; p<a+n; p++\cf0 )\
+		\{\
+			if (\cf4 *p\cf0  < 0)\
+			return \cf4 p\cf0 ;	\
+					// p is getting incremented. p = &a[0], &a[1], &a[2]...\
+					// p = &a[2] equals &a[0] + 2. p = a, a+1, a+2...\
+		\}\
+		return \cf4 a + n or nullptr\cf0 ;		\
+					// Pointer to the end of the array.\
+					// An alternative return: null pointer.\
+					// c++11: 
+\f2\b nullptr
+\f1\b0 \
+					// Earlier: NULL (don\'92t use this)\
+					// \cf4 Attempting to dereference a nullptr will result in undefined behavior.\cf0 \
+	\}\
+\
+	int main()\
+	\{\
+		double da[5];\
+		...\
+		\cf4 double* pfn\cf0  = findFirstNegative(da, 5);\
+		if (\cf4 pfn == da + 5 or nullptr\cf0 )\
+ 			cout << "There are no negative values in the array" << endl;\
+		else\
+		\{\
+			cout << "The first negative value is " << \cf4 *pfn\cf0  << endl;\
+			cout << "It's an element number " << \cf4 pfn - &da[0]\cf0  << endl;\
+												     //pfn - da\
+		\}\
+	\}	\
+\
+	// What we get back from the function is a pointer to the element of the array.
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ## ---------------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+	// Original version, without pointer.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 	int\cf0  findFirstNegative(double a[], int n)\
+	\{\
+		for (int k = 0; k < n; k++)\
+		\{\
+			if (a[k] < 0)\
+				return \cf4 k\cf0 ;\
+		\}\
+		return -1;\
+	\}\
+\
+	int main()\
+	\{\
+		double da[5];\
+		...\
+		\cf4 int fnpos\cf0  = findFirstNegative(da, 5);\
+		if (fnpos == -1)\
+ 			cout << "There are no negative values in the array" << endl;\
+		else\
+		\{\
+			cout << "The first negative value is " << \cf4 da[fnpos]\cf0  << endl;\
+			cout << "It's ar element number " << \cf4 fnpos\cf0  << endl;		\}\
+	\}	
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ## ---------------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ----------------------------------- Null Pointer ----------------------------------- ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 		\
+	
+\f1 double* p  = nullptr;\
+	p = nullptr;\
+	if (p == nullptr);\
+	if (p != nullptr);\
+\
+	\cf4 *p	= ... // Undefined behavior if we follow p\cf0 \
+\
+	int* p1;\
+	int* p2 = nullptr;\
+\
+	\'85 *p1 \'85	// Undefined behavior. p1 is not initialized. May crash or not.\
+	\'85 *p2 \'85	// Undefined behavior. p2 has the null pointer value. The program crashes.\
+\
+	null pointer: 0x000000 \
+
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ## ---------------------------------------------------------------------- ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+	
+\f1 int g_n = 42; \
+\
+	void func_ptr(int* pp)\
+	\{ 								// \cf4 Either int* &pp,\cf0 \
+  		pp = &g_n; 				// \cf4 or *pp = g_n\cf0 \
+	\} \
+\
+	int main() \
+	\{ \
+  		int n = 23; \
+  		int* pn = &n; \
+  		cout << "Before :" << *pn << endl; \
+  		func_ptr(pn); \
+  		cout << "After :" << *pn << endl; \
+	\} \
+\
+	
+\f0 ____________
+\f1 \
+
+\f0 	output:	23\
+	   			23\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf4 	// how can i get 42 after calling the function?\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	void func_ptr(int* &pp)\
+	\{ 								\
+  		pp = &g_n; 				\
+	\} \
+\
+	// Or\
+\
+	void func_ptr(int* pp)\
+	\{ 								\
+  		*pp = g_n; 				\
+	\} 
+\f0 \
+\
+
+\f1 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 # ----------------------------------- Struct and Classes ----------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 												     
+\f1 \
+		name			salary			age\
+	-------------------------------------\
+		Fred			60000			50\
+		Ethel			70000			35\
+		Lucy			40000			33\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 	// If we use 2-D array, we encounter a type problem.\
+	// Name should be stored in string array.\
+	// Salaries should be stored in double array.\
+	// And ages should be stored in int array.\
+\
+	// How about that we set up several arrays?\
+	// Corresponding elements of these 3 arrays will belong to the same employee.\
+	// It works, but it may make the program hard to read and work well.\
+\
+	// If I can group the information about pertains to a particular student,\
+	// it\'92s going to be a lot more manageable. This \'93grouping\'94 mechanism is provided by\
+	// what\'92s called a structure. You can think of it as a new compound data type which you can customize \
+	// using existing data types (like int, double\'85).\
+\
+	// I can create an Employee structure as follows.\cf0 \
+\
+\
+	struct Employee	\cf3 // Probably we have a bunch of employee\cf0 \
+	\{\
+		string name;\
+		double salary;\
+		int age;\
+\cf3 		// string address;\
+		// \'85 some more information\cf0 \
+	\}\cf4 ;\cf0  	\cf3 // <\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97 Don\'92t forget this semi-colon.\cf0 \
+\
+\cf3 	// This means each Employee consists of 3 components. \
+	// Each component is called the 
+\f2\b \cf3 member 
+\f1\b0 \cf3 of the structure. \
+	// You can almost treat a structure as if it were just another type.\
+	// You can create a Employee variable by:\
+	\
+		\cf5 Employee e;\cf3 \
+\
+	// It\'92s also possible to create an array of Employees by doing\
+\
+		\cf5 Employee company[NUM_EMPLOYEES];\cf3 \
+\
+	// How to access these members of structure?\
+	// We can access it by using a . (dot).\cf0 \
+\
+	int main()\
+	\{\
+		Employee e1;		// In c++, it is called a data members.\
+		Employee e2;		// Another employee.\
+\
+		e1.name = "Fred";\
+		e1.salary = 60000;\
+		e1.age = 50;\
+	\
+		e2.name = "Ethel";\
+		e1.age++;\
+		\
+		cout << "Enter a name: ";\
+		getline(cin, e2.name);\
+\
+		Employee company[100];\
+		company[3].name = "Ricky";\
+\
+		for (int k = 0; k != company[3].name.size(); k++)\
+			cout << company[3].name[k] << endl;			\cf3 // this will print the name vertically.\cf0 \
+\
+		cout << e1.name << endl;\
+		cout << e2.name << endl;\
+	\}\
+\
+	e1\
+	+---------+\
+	|name		|	// \'93Fred\'94\
+	|salary	|	// 60000\
+	|age	  	|	// 50\
+	+---------+\
+\
+	e2\
+	+---------+\
+	|name		|	// \'93Ethel\'94\
+	|salary	|	// ?? double\
+	|age	  	|	// ?? int\
+	+---------+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 			
+\f2\b \cf4 	An object				The name of\
+				of some		.		a member of\
+				struct type			that type\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ------------------------- const Reference ------------------------- ##\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f1 \cf0 \
+	void printPayCheck(\cf4 const\cf0  employee\cf4 &\cf0  e);\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	struct Employee	\
+	\{	\
+		string name;\
+		double salary;\
+		int age;\
+	\};\
+\
+	int main()\
+	\{\
+		Employee company[100];\
+		int nEmployees = 0;\
+		
+\f3 // 
+\f1 \'85 read in some information, fill some of the array, set nEmployees.\
+	\
+		printPayCheck(company[0]);\
+	\}\
+\
+	\cf3 	// paycheck will look like:\cf0 \
+\
+	void printPayCheck(\cf4 const\cf0  employee\cf4 &\cf0  e)	\cf2 // if passing by value, expensive to copy the whole object, so use reference.\cf0 \
+	\{\
+		cout << \'93Pay to the order of \'93 << \cf2 e.name\cf0  << \'93the amount $\'94 << \cf2 e.salary\cf0 /12 << endl;\
+	\}\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ---------------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf6 	Caller's object should not change:\
+		pass by values				--------> best if objects are cheap to copy\
+		pass by \cf2 constant\cf6  reference		--------> best if objects are not cheap to copy\
+\
+	Caller's object should change\
+		pass by (non-constant) reference\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+
+\f0 \cf0 ## ---------------------------------------------------------------------- ##
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+
+\f0 \
+\
+\
+\
+\
+\
+\
+\
+\
+}

@@ -1,0 +1,316 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset0 Menlo-Bold;\f2\fmodern\fcharset0 Courier;
+\f3\fmodern\fcharset0 Courier-Oblique;\f4\fnil\fcharset0 Menlo-Italic;\f5\fmodern\fcharset0 Courier-Bold;
+\f6\fmodern\fcharset0 Courier-BoldOblique;}
+{\colortbl;\red255\green255\blue255;\red253\green128\blue8;\red127\green127\blue127;\red0\green0\blue255;
+\red251\green2\blue7;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c57637\c0;\cssrgb\c57046\c57047\c57046;\cssrgb\c1680\c19835\c100000;
+\cssrgb\c100000\c14913\c0;}
+\margl1440\margr1440\vieww26760\viewh19880\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Oct. 10 - W - Lec 4\
+\
+
+\f1\b If Statement + More on Expression\
+\
+
+\f0\b0 # -------------------------------------------------------------------------------- #\
+\
+Salary: tax rate increases as salary increases.\
+The rule:\
+************************************************\
+		Pay Rate			Tax Rate\
+		>=$18/h 			10% \
+		<$18/h 			5%  \
+************************************************\
+\
+There are times you want your program to 
+\f1\b behave differently
+\f0\b0  based on some 
+\f1\b \cf2 condition
+\f0\b0 \cf0 .\
+\
+
+\f2 	if(
+\f3\i condition
+\f2\i0 )\
+		
+\f3\i statement;
+\f2\i0 \
+	else				\cf3 // else part is optional\cf0 \
+		
+\f3\i statement;
+\f0\i0 \
+\
+something		>	another thing		bigger than\
+something		>=	another thing		bigger than or equal to\
+something		<	another thing		smaller than\
+something		<=	another thing		smaller than or equal to\
+something		!=	another thing		not equal to\
+something		
+\f1\b \cf4 ==
+\f0\b0 \cf0 	another thing		is equal to?\
+\
+> >= < <=		\cf3 // make sure to check the boundary\cf0 \
+at least			>=\
+at most			<=\
+more than			>\
+less than			<\
+no more than		<=\
+no less than		>=\
+\
+# ---------------------------------------- About Statement ---------------------------------------- #\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f4\i \cf0 	// i went to the beach.\
+	// i had some ice cream.
+\f0\i0 \
+\
+What if the statement is not a single sentence?\
+We need to use 
+\f1\b curly brace \{\}
+\f0\b0  if we have compound statement.\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	if(
+\f3\i condition
+\f2\i0 )\
+	\{\
+		
+\f3\i statement1;\
+		statement2;\
+		statement3;\
+	\}
+\f2\i0 \
+	else\
+	\{		\
+		
+\f3\i statement4;\
+		statement5;\
+		statement6;\
+	\}
+\f0\i0 \
+\
+
+\f2 \
+	if (rateOfPay >= 18.00)\
+	\{\
+		cout << "$" << 0.10 * hoursWorked * rateOfPay << " will be withheld" << endl;\
+		cout <<  "You're making enough." <<endl;\
+	\}\
+	else\
+	\{\
+		cout << "$" << 0.05 * hoursWorked * rateOfPay << " will be withheld" << endl;\
+		cout << "Ask for a raise!" << endl;\
+	\}\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf5 	// \{ and \} slow the origin program down\
+	// Alternatively you can write\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+	if (rateOfPay >= 18.00)	\cf4 \{\cf0 \
+		cout << "$" << 0.10 * hoursWorked * rateOfPay << " will be withheld" << endl;\
+		cout <<  "You're making enough." <<endl;\
+	\cf4 \}\cf0 \
+\
+	// This looks better - by putting "\{" in the first line).
+\f0 \
+\
+# -------------------------------------------------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 \
+Global variables sometimes make programming easier.\cf0 \
+\
+If 0.10 (10%) changes, we have to find all 0.10 in the program and change them one by one, which is problematic. \
+How to solve this problem?\
+\
+>> Method 1: global search and replace\
+>> Problem: 0.1035 will also be change.\
+>> Problem: maybe other 0.10 with nothing to do with withholding.\
+\
+>> method 2: set magic number (GLOBAL_VARIABLE)\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f3\i \cf0 	int const HIGH_TAX_RATE = 0.10;\
+	int const LOW_TAX_RATE = 0.05;
+\f0\i0 \
+\
+# -------------------------------------------------------------------------------- #\
+\
+The conception of "scope"\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	...\
+	\{\
+		int x = 10\
+	\}\
+		int x = 5
+\f0 \
+\
+The scope of variable declared in a \{ \} is limited in that \{ \}.\
+The variable declared in a if statement will only be used in if \{ \}.\
+\
+	\cf3 // here is an example:\cf0 \
+	\cf3 // if a person is a US citizen and is at least 18, he/she has the right to vote.\cf0 \
+\
+
+\f2 	string citizenship;\
+	int age;\
+	...\
+\
+	if (citizenship == "us")\
+	\{\
+		if (age >= 18)\
+		cout << "You can vote in U.S. elections." << endl:\
+	\}\
+	
+\f5\b \cf5 else
+\f2\b0 \cf0 \
+		cout << "You are not a U.S. citizen." << endl;
+\f0 \
+\
+Which "if" does the "else" belong to?\
+\{\} is needed. Else should never penetrate \{\}.\
+\
+\
+\
+# -------------------- More on Expression, Assignment, and Initialization -------------------- #\
+
+\f2 	\
+	// Assignment statement:			\
+	variable = expression;		\
+							\
+	// Declaration with initialization:	\
+	
+\f6\i\b type
+\f2\i0\b0  variable = expression;
+\f0 	\
+\
+## ------------------------------ Integer and Double Expression ------------------------------ ##\
+\
+
+\f2 	int m = 2;\
+	int n = 3;\
+\
+	n = 4 * m;		\cf3 // n is now 8 (this is a command: store the new value into n)\cf0 \
+	n = 2 * n;		\cf3 // n is now 16\cf0 \
+\
+	int a = 4;\
+	int b = a + 5;	\cf3 // b is 9\cf0 \
+	...\
+	a = 5;				\cf3 // b is still 9\cf0 \
+\
+	...\
+	b = a + 40;		\cf3 // b is now 45\cf0 \
+	a = 6;				\cf3 // b is still 45
+\f0 \cf0 \
+\
+\
+				a		b\
+			--------------\
+				4		9\
+				5		9\
+				5		45\
+				6		45\
+\
+
+\f2 	m = b;\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 		// assign b to m\
+		// set m to b\
+		// m gets b\cf0 \
+		(all of these make sense)
+\f0 \
+\
+### -------------------------------------------------------------------------------- ###\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	double x = 5;\
+	int y = 7;\
+\
+	int z = 10.99999;		\cf3 // z becomes 10: it takes the floor value\cf0 \
+\
+	int q = 5/2;				\cf3 // q becomes 2\cf0 \
+\
+	double q2 = 5/2;			\cf3 // q2 is
+\f5\b \cf3  2.0 
+\f2\b0 \cf3 since it is a division involves only integers\cf0 \
+\
+	double q3 = 5.0/2;		\cf3 // q3 is 2.5\cf0 \
+\
+	int d = 5;\
+\
+	\cf5 double q4 = static_cast<double>(d)/2;\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf5 		\
+				
+\f3\i \cf5 static_cast<type>(variable);\
+								// this temporarily changes the type of a variable
+\f0\i0 \cf0 \
+\
+\
+## ------------------------------ Boolean Expression ------------------------------ ##\
+	\
+	\cf3 // A boolean expression is an expression that evaluates to either true or false.\
+	// For example, suppose \cf0 \
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	int x = 5, y = 6, z = 7;\
+\
+	x >= y;									// 0 (false)\
+	x == y;									// 0\
+	(x-y) > 10;								// 0\
+	(x < y && y < z);						// 1 (true)\
+	((x != y) || (x > y)) && (y == z);	// 1 
+\f0 \
+\
+\
+// Code\
+\
+
+\f2 #include <iostream>\
+using namespace std;\
+\
+int main()\{\
+	int x = 5, y = 6, z = 7;\
+	bool a = true;\
+	bool b = false;\
+	cout << ((x != y) || (x > y)) && (y == z);   // True\
+	cout << (((x != y) || (x > y)) && (y == z)); // False\
+	cout << a && b;				// True\
+	cout << b && a;				// False\
+	cout << (a && b); 			// False\
+	cout << (x < y && y < z); 	// True\
+\}\
+
+\f0 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

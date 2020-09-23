@@ -1,0 +1,479 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fmodern\fcharset0 Courier-Bold;\f2\fmodern\fcharset0 Courier;
+\f3\fmodern\fcharset0 Courier-BoldOblique;}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue255;\red0\green0\blue0;\red251\green2\blue7;
+\red255\green255\blue255;\red127\green127\blue127;\red0\green0\blue255;\red127\green0\blue128;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c25279\c100000;\cssrgb\c0\c0\c0;\cssrgb\c100000\c14913\c0;
+\cssrgb\c100000\c100000\c100000;\cssrgb\c57046\c57047\c57046;\cssrgb\c1680\c19835\c100000;\cssrgb\c57919\c12801\c57269;}
+\margl1440\margr1440\vieww28760\viewh19280\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Nov. 26 - M - Lec 16\
+\
+	Constructor + Pointer + Class\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # --------------------------------------------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 	// \cf2 Constructor
+\f2\b0 \cf0 : when the object is created, it is in a valid state.\
+\
+	//\cf2  member function\cf0 : mutator (will modify the object).\
+\
+	// \cf2 const member function\cf0 : accessor (will not modify the object).\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 \
+	// \cf4 \cb5 \expnd0\expndtw0\kerning0
+Public data members\cf3  are discouraged \
+	// because they violate the principle of encapsulation.\
+\cb1 \kerning1\expnd0\expndtw0 \
+\
+	
+\f1\b Data members should always be private
+\f2\b0  for 2 reasons: \
+\
+	If data members are public,\
+\
+	(1) \cb5 \expnd0\expndtw0\kerning0
+This makes it impossible for the class to ensure that \
+			invariant properties of that variable are respected. \
+\
+	(2) It also makes it impossible to change the implementation in the future in certain ways. \
+			For example, it is sometimes desirable to replace a variable with a computed value.
+\f0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 \cb1 \kerning1\expnd0\expndtw0 # --------------------------------------------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+
+\f2 	
+\f1\b class Target
+\f2\b0 \
+	\{	\
+		
+\f1\b public
+\f2\b0 :	\cf6 // methods\cf0 \
+			target();							\cf6 // This is the default constructor.\cf0 \
+			
+\f3\i\b bool
+\f2\i0\b0  move(char dir);			\cf6 // Mutator function.\cf0 \
+			
+\f3\i\b int
+\f2\i0\b0  position() \cf2 const\cf0 ;			\cf6 // Accessor function.\cf0 \
+			
+\f3\i\b void
+\f2\i0\b0  replayHistory() \cf2 const\cf0 ;	\cf6 // Accessor function.\cf0 \
+		
+\f1\b private
+\f2\b0 : \cf6 // member data\cf0 \
+			
+\f3\i\b \cf3 int
+\f2\i0\b0  pos;\cf0 \
+			
+\f3\i\b string
+\f2\i0\b0  history;					\cf6 // A class can contain an object of another class (string).\cf0 \
+	\}\cf2 ;\cf0 \
+\
+	void repeatMove(Target& x, char dir, int ntimes)	\cf4 // doesn't need to be a member function. \cf0 \
+	\{\
+		for (int k = 0; k != ntimes; k++)\
+		\{\
+			x.move(dir);\
+		\}	\
+	\}\
+\
+	void printPos(const Target& x)	\
+	\{						\
+		cout << x.position();\
+	\}\
+\
+	int main()\
+	\{\
+		Target t;\
+		t.move('R');\
+		t.replayHistory();\
+	\
+		Target t2;\
+		t2.move('L');\
+\
+		printPos(t2);\
+\
+	\cf7 	Target ta[3];\
+			// the constructor gets called for 3 times.\
+	\
+		/////////////////////////////\
+		///		ta[3]\
+		///		+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+\
+		///		|[0]|[1]|[2]|\
+		///		+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+\
+		///		|-1 | 1 |-3 |\
+		///		+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+\
+		///		| L | R |LLL|\
+		///		+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+\cf0 \
+		\cf7 /////////////////////////////\cf0 \
+\
+\
+		ta[0].move('L');\
+		ta[1].move('R');\
+		repeatMove(ta[2], 'L', 3);\
+	\}	\
+\
+	Target::Target()\
+	
+\f1\b \cf2  : pos(0), history("")
+\f2\b0 \cf0 \
+	\{\}\
+\
+	bool Target::move(char dir)\
+	\{\
+		switch(dir)\
+		\{\
+			case 'R':\
+			case 'r':\
+				pos++;\
+				break;\
+			case 'L':\
+			case 'l':\
+				pos--;\
+				break;\
+			default:\
+				return false;\
+		\}\
+		history += toupper(dir);\
+		return true;\
+	\}\
+\
+	void Target::replayHistory() \cf2 const\cf0 \
+	\{\
+		for (int k = 0; k != history.size(); k++)\
+		\{\
+			cout << history[k] << endl;\
+		\}\
+	\}\
+\
+	int Target::position() \cf2 const\cf0 \
+	\{\
+		return pos;\
+	\}\
+\
+	// We might want a bunch of targets.\
+\
+
+\f0 -------------------------------------------------------\
+	\
+
+\f2 	// Suppose we have a target moves in a 3-d space\
+	// The data member pos becomes an int array\
+\
+	struct Target3D\
+	\{\
+		int pos[3];			// We will have 3 coordinate.\
+		string history;\
+		int size;\
+	\};\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 \
+	+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+\
+	|   |   |   | pos[3];	// Representa the location.\
+	+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+\
+	|    " "	  | history;\
+	+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+\
+	|     y 	  | size;\
+	+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 -------------------------------------------------------\cf4 \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # ------------------------ The Use of Pointer in A Class ------------------------ #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 	
+\f2 \cf2 // Manipulating dynamic storage. \
+	// I don't want create the target until I need to use it.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \
+	
+\f2 \cf3 // In a game, we can create 1000 targets, \
+	// and the constructor will be called 1000 times (Initialize 1000 targets),\
+	// but we will not use most of them. We may die after use 20 targets,\
+	// so it is expensive to initialize.
+\f0 \
+\
+
+\f2 \cf0 	// When create pointers to an array, the constructor is not called.\
+	\
+		\cf3 Target* targets[1000];	
+\f1\b \cf2 // It is cheap to create pointers.
+\f2\b0 \cf3 \
+\cf0 \
+	void f()\
+	\{\
+		while (...)\
+			playGames();\
+	\}\
+\
+\
+	void playGames()\
+	\{\
+		\cf2 Target* targets[1000];	// It is cheap to create pointers.\
+\cf0 \
+		int nTargets = 0;\
+		...\
+		if(...)\
+			addTarget(targets, nTargets, 3);\
+		...\
+		int i;\
+		... something gives i a value, say 1.\
+		targets[i]->move('R');\
+\
+			// Left hand side: pointer to a target.\
+			// so we have to use the error operator.\
+\
+		\cf2 delete targets[1];\cf0 	\
+		targets[1] = targets[2];	// pointing to the same thing as targets[2] does.\
+		nTargets\'97-;\
+		target[2] = nullptr;		// optional, not needed. only for preference reason. \
+		\
+\
+			// this target should no longer be a part of the game.\
+			// this storage no longer belongs to the program. \
+			// it is given back to the computer.\
+\
+			// dangling pointer: it is undefined behavior to follow that pointer.\
+			// so we don't want the pointer to be in the array.\
+\
+			// if we only have 2 valid pointers in the array,\
+			// we want their position to be 0 and 1. this is the convention.\
+\
+			// so we should replace this pointer with the next pointer \
+			// and reduce the number of pointers by 1\
+	\}\
+\
+	void addTargets(Target* \cf2 ta\cf0 , int
+\f1\b \cf8 &
+\f2\b0 \cf0  nt, int howManyNewOnes)\
+	\{\
+		for (int k = 0; k < howManyNewOnes; k++)\
+		\{\
+			// \cf4 Target t;\cf0  \cf4 WRONG.\cf0  \
+			// Local variable. We don't want to point to the local variables, \
+			// We want to point to something that 
+\f1\b will not go away
+\f2\b0  when we leave the function.\
+		\
+			\cf2 ta[nt] = new Target;\cf0 		\
+				\
+			// The operating system (OS) will distribute some space (in memory) for this variable. \
+			// But this new variable 
+\f1\b doesn't have a name
+\f2\b0 .\
+	\
+			\cf8 nt++\cf0 ;					\
+			\
+			// Create a new space for the pointer to point to -> .\
+			// Follow the pointer and constructs the target.\
+		\}\
+	\}
+\f0 \
+\
+
+\f2 	\cf3 +\'97\'97\'97+	// \cf0 This memory will not go away \cf3 \
+	| t | 	// \cf0 Until we explicitly say (
+\f1\b \cf2 delete
+\f2\b0 \cf0 ) that we give these memories back.\cf3 \
+	+\'97\'97\'97+\cf0 \
+	  ^\
+	  |	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf3 	+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+----\
+	|   |   |   |    ....targets[1000]\
+	+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+\'97\'97\'97+----
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 \
+	// Built-in type will be left uninitialized, very cheap.\
+	// Creating 1000 targets is expensive.\
+	// Creating 1000 pointers to targets is very cheap.\
+\
+	// After the function addTargets playGame, the array (the local variables) go way, 	// but the three (dynamically allocated Target objects) space left.\
+\
+	// What happens here is that we cannot get rid of those new spaces.\
+	// Eventually we will come to some points we have no room for another new target object.\
+\
+	// 
+\f1\b These objects are garbages since you lose the access to them (\cf4 memory leak\cf0 ). \
+	
+\f2\b0 // This is called: a memory leak. Computer leaks memory slowly. \
+	// It's hard for people to find this. \
+	// People can only find this when the program runs for a long time.\
+\
+	// So what can we do about it??\
+	// >> Option 1: use a garbage collector: keep a track of all the memory that it gives out /\
+	// all the pointers point to that area (heap), but this is very expensive.\
+\
+	// >> Option 2: C++ asks people to say when they don't need those memories - 
+\f1\b \cf2 delete
+\f2\b0 \cf0 \
+\
+
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 ### ------------------------ Stack and Heap ------------------------ ###\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	Named local variables ("automatic variables")\
+		Live on the "
+\f1\b stack
+\f2\b0 "\
+\
+	Variables declared outside of any function live in the "Global Storage Area"\
+		("The static storage area")\
+	\
+	Dynamic storage lives on the "
+\f1\b heap
+\f2\b0 ".\
+
+\f0 \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # --------------------------------------- Person --------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 \
+	// What if we want a type that represents a person.\
+	// Every person has a name and a birthYear.\
+\
+	class Person\
+	\{\
+	  
+\f1\b public
+\f2\b0 :\
+		Person(string \cf2 nm\cf0 , int \cf2 by\cf0 );	\
+			\cf2 // The constructor needs different "variable names". \
+			// We can't do Person(string name, int birthYear).\cf0 \
+		\cf3 string\cf2  name() \cf3 const;\cf4 		\
+			\cf0 				\
+	  
+\f1\b private
+\f2\b0 :\
+		string 	\cf2 m_name;\cf0 \
+		int 		\cf2 m_birthYear;\cf0 \
+	\};\
+			
+\f1\b // Naming convention:\
+			// All data members should be named like this: \cf2 m_name and m_birthYear\cf0 .
+\f2\b0 \
+\
+	Person::Person(string nm, int by)\
+	\{\
+		m_name = nm;\
+		m_birthYear = by;\
+	\}\
+\
+	string Person::name() const\
+	\{\
+		return m_name;\
+	\}\
+\
+		// We can give constructors arguments.\
+\
+	void h()\
+	\{\
+		Person p("Fred", 1999);\
+		cout << "This person's name is " <<\cf4  p.name()\cf0  << endl;\
+				\cf4 // We cannot do p.m_name because it is private.\cf0 \
+		\cf4 Person p2\cf0 ;			\
+				\cf4 // Won't compile. we do not have a default constructor.\cf0 \
+	\}\
+\
+	// "Default constructor"		\
+	// "Zero-argument constructor"\
+\
+	// If we don't have any constructor, the compiler will write a default constructor for us.\
+
+\f0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf4 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 ---------------------------------------------------------------------------\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10793\pardirnatural\partightenfactor0
+\cf0 # --------------------------------------- Multiple Class --------------------------------------- #\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 									\
+
+\f2 	class Toy\
+	\{\
+		...\
+	\};\
+\
+	class Person\
+	\{\
+	  public:\
+		Person(string nm, int by);\
+	\cf3 	string name() const;\
+		void addToy();\cf4 \
+		\cf2 void removeToy();\cf4 	\
+	\cf0 										\
+	  private:\
+		string 	m_name;\
+		int 		m_birthYear;\
+	\cf2 	Toy* 		m_favoriteToy;\
+					// We don't want to use Toy m_favoriteToy,\
+					// because in this circumstance, a Toy is mandatory.\cf0 \
+	\};\
+\
+	Person::Person(string nm, int by)\
+	\{\
+		m_name = nm;\
+		m_birthYear = by;\
+		m_favoriteToy = nullptr;\
+	\}\
+\
+	string Person::name() const\
+	\{\
+		return m_name;\
+	\}\
+\
+	void Person::addToy()\
+	\{	\
+		
+\f1\b \cf8 delete m_favoriteToy;		// Add this line.
+\f2\b0 \cf0 \
+		
+\f1\b \cf2 m_favoriteToy = new Toy;
+\f2\b0 \cf0 \
+	\}\
+\
+	void Person::removeToy();\
+	\{\
+		delete m_favoriteToy;\
+		
+\f1\b \cf2 m_favoriteToy = nullptr;\cf0 	// For the reason of safety.
+\f2\b0 \
+	\}\
+	\
+	void h()\
+	\{\
+		Person p("Fred", 1999);\
+		cout << "This person's name is " <<\cf4  \cf3 p.name()\cf0  << endl;\
+\
+		p.addToy():\
+			
+\f1\b \cf8 // We leak some more memory every time calling this function.\
+			// So we add a line to deal with this problem (see above).
+\f2\b0 \cf0 \
+	\}\
+}

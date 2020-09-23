@@ -1,0 +1,184 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset0 Menlo-Bold;\f2\fmodern\fcharset0 Courier;
+\f3\fnil\fcharset0 Menlo-Italic;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;\red127\green127\blue127;\red253\green128\blue8;
+\red251\green2\blue7;\red251\green2\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c1680\c19835\c100000;\cssrgb\c57046\c57047\c57046;\cssrgb\c100000\c57637\c0;
+\cssrgb\c100000\c14913\c0;\cssrgb\c100000\c25279\c100000;}
+\margl1440\margr1440\vieww31260\viewh19880\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Oct. 3 \'96 W \'96 Lec 3\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 The role of programming language and its syntax + Type of Variables
+\f0\b0 \
+\
+\
+Instructions in English -> C++ Program -> Compiler -> Program in Binary (exe)\
+\
+\
+# ---------------------------------------- Example 1 ---------------------------------------- #\
+											+ Ingredient\
+				  							^\
+Recipe in English	\'96>	Coking Robot	\'96>	Yummy Cake \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx10010\tx11519\pardirnatural\partightenfactor0
+\cf0         	 	      																					       + Fetching the Ingredient\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 												       ^\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx9353\tx10061\tx10771\tx11521\pardirnatural\partightenfactor0
+\cf0 Recipe in English 	\'96> Robot 1	-> 	Robot 2	\'96> 	yummy cake\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 			        					^\
+				 						Recipe in Chinese (Robot 1 is simply a translator)\
+\
+\
+Robot 1 is like a C++ compiler. It translates C++ into machine language which is executable.\
+\
+\
+# ---------------------------------------- Example 2 ---------------------------------------- #\
+\
+Suppose we have a command \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 "$Beat 3 eggs into a mixing bowl."\cf0 \
+>>> Problem 1: \
+>>> Ranslator can\'92t translate English into Chinese (syntax error).\
+\
+\cf2 "$Beat 3333 eggs into a mixing bowl."\cf0  \
+>>> Problem 2: \
+>>> This is correct in English. \
+>>> However during execution, something wrong would happen (logic error / runtime error).\
+\
+Outcomes:\
+1.	The robot may stop when running out of the eggs (unexpected output)\
+2.	Buy 3333 eggs and a larger bowl (end up with an infinite loop).\
+3.	Messed up (program crashed).\
+\
+# ------------------------------------------------------------------------------------------ #\
+\
+What is syntax? \
+>> For example, we all know mathematical "syntax":\
+\
+	f(x, y) \cf3 // a function is defined like this\cf0 \
+		\
+	[2] f \'85 [1][1]@ [2][2]@ # \cf3 // not like this\cf0 \
+\
+The compiler will reject your code if you don't use correct syntax.\
+\
+# ------------------------------------------------------------------------------------------ #\
+\
+C++ is a collection of functions.\
+\
+There are certain names built in the language, e.g. standard library, and others will be created by human.\
+	\
+	built-in libraries:\
+		standard library / math library / medical library\'85\
+\
+For example, the name "cout" belongs to part of the C++ library, which are understood by compilers. \
+For other words (functions) that we created, we have to say what is that / how that works.\
+\
+# ------------------------------------------------------------------------------------------ #\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2 \cf0 	\cf4 #include <iostream>
+\f0 \cf0 \
+\
+I/O stream is a part of C++ library.\
+\
+Even if we "include" this library, the compiler still can\'92t understand what are "cin" and "cout". why?\
+\
+As society gets bigger \'96 people use different names \'96 we don\'92t always have to use the full name (usually we call people by their first name).\
+\
+What if functions of the same name in different libraries are different? \
+>>> The idea is that each 	library will have all their name organized in a namespace (family name). For example,\
+\
+		ABC.rotate()	\cf3 // ABC is the "family name" of this function\cf0 \
+		rotate()\
+\
+
+\f2 	\cf4 using namespace std;
+\f0 \cf0 \
+\
+This like simply tells the compiler: "I'd like to use the function of this library, and please let me leave off their "family name" if there is no ambiguity."\
+\
+\
+\
+# ---------------------------------------- Variables ---------------------------------------- #\
+\
+
+\f2 	How many hours did you work? 40h\
+	What is your hourly rate of pay? $16.13\
+	You earned $645.20
+\f0 \
+\
+You have to instruct your computer every little thing it needs to do, even what it needs to remember. \
+We create data storages for the computer and explicitly tells it what to store in which storage. \
+We can all these storages variable.\
+\
+	int x;		\cf3 // declare a variable\
+				// int is called the data type; x is called the identifier\cf0 \
+	\
+	x = 5;		\cf3 // assignment\cf0 \
+\
+\cf5 An 
+\f1\b identifier
+\f0\b0  must 
+\f1\b \ul begin
+\f0\b0 \ulnone  with an 
+\f1\b alphabetic character
+\f0\b0  (a-z or A-Z) or 
+\f1\b an underscore "_"
+\f0\b0 ,\cf0  \cf6 while may be 
+\f1\b \ul followed
+\f0\b0 \ulnone  by 
+\f1\b alphabetic
+\f0\b0  / 
+\f1\b numeric
+\f0\b0  (0-9) characters and 
+\f1\b underscores
+\f0\b0 .\cf0  \
+\
+Set a variable:\
+short (aka short int):	2 bytes / \uc0\u8722 32,768 to 32,767\
+int: 						4 bytes / \uc0\u8722 2,147,483,648 to 2,147,483,647\
+float: 					4 bytes / approximately 10e\'9638 to 10e38 (7 significant figures)\
+double: 					8 bytes / from + or \'96, 10e-308 to 10e308 (15 s.f.)\
+char: 						1 byte / all ASCII char can also be used as an int type\
+
+\f3\i string:					a string is an ordered sequence of 0 or more characters
+\f0\i0 \
+(save for later)\
+\
+\
+## ------------------------------ Variable Declaration ------------------------------ ##\
+\
+	int x;								\cf3 // x is an integer\cf0 \
+	double milesPerHour;			\cf3 // milesPerHour is a double\cf0 \
+	int countApple, countOrange;	\cf3 // multiple declarations (same type) at once\cf0 \
+\
+You can only use these variables after you declare them.\
+\
+## ------------------------------ Assignment ------------------------------ ##\
+\
+	x = 5;	y = 6;						\cf3 // '=' is called the assignment operator.\cf0 \
+\
+## ------------------------------ Assign Initial Values ------------------------------ ##\
+\
+	int x = 5;\
+	int y = 6;\
+	int x = 5, y = 6;\
+\
+	\cf5 int x = "Hello";\cf0 	\cf3 // WRONG! won't compile;\cf0 \
+	int x = 5.52;		\cf3 // Will compile, as a decimal number in the right can be made into an integer by cutting off the fractional part.\cf0 \
+\
+\
+\
+\
+\
+\
+\
+\
+}
